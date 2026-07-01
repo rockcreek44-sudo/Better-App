@@ -84,15 +84,12 @@ window.onload = function () {
         <textarea id="notes"></textarea>
 
         <button class="card primary" id="saveCatch">Save Catch</button>
-
         <button class="card" id="backHome">Back Home</button>
       </section>
     `;
 
     document.getElementById("saveCatch").onclick = function () {
-
-      const catches =
-        JSON.parse(localStorage.getItem("catches") || "[]");
+      const catches = JSON.parse(localStorage.getItem("catches") || "[]");
 
       catches.push({
         species: document.getElementById("species").value,
@@ -105,46 +102,55 @@ window.onload = function () {
       });
 
       localStorage.setItem("catches", JSON.stringify(catches));
-
       alert("Bass saved!");
-
+      homeScreen();
     };
 
     document.getElementById("backHome").onclick = homeScreen;
+  }
 
+  function showTrips() {
+    const catches = JSON.parse(localStorage.getItem("catches") || "[]");
+
+    let catchCards = "";
+
+    if (catches.length === 0) {
+      catchCards = `<p>No catches saved yet.</p>`;
+    } else {
+      catches.slice().reverse().forEach(function(c) {
+        catchCards += `
+          <div class="form-card">
+            <h2>${c.species}</h2>
+            <p><strong>Weight:</strong> ${c.weight || "Not entered"}</p>
+            <p><strong>Length:</strong> ${c.length || "Not entered"}</p>
+            <p><strong>Lake / Pond:</strong> ${c.lake || "Not entered"}</p>
+            <p><strong>Lure:</strong> ${c.lure || "Not entered"}</p>
+            <p><strong>Date:</strong> ${c.date}</p>
+            <p><strong>Notes:</strong> ${c.notes || "None"}</p>
+          </div>
+        `;
+      });
+    }
+
+    app.innerHTML = `
+      <section class="hero">
+        <div class="brand">2° BAITS&trade;</div>
+        <div class="tagline">MY TRIPS</div>
+      </section>
+
+      <section class="form-card">
+        <h2>Fishing Log</h2>
+        <button class="card" id="backHome">Back Home</button>
+      </section>
+
+      ${catchCards}
+    `;
+
+    document.getElementById("backHome").onclick = homeScreen;
   }
 
   document.querySelectorAll(".card")[0].onclick = showCatchForm;
-
-  document.querySelectorAll(".card")[1].onclick = function () {
-
-    const catches =
-      JSON.parse(localStorage.getItem("catches") || "[]");
-
-    if (catches.length === 0) {
-      alert("No catches saved yet.");
-      return;
-    }
-
-    let text = "";
-
-    catches.forEach(function(c){
-
-      text +=
-        c.date +
-        "\n" +
-        c.species +
-        " - " +
-        c.weight +
-        " lb - " +
-        c.length +
-        "\n\n";
-
-    });
-
-    alert(text);
-
-  };
+  document.querySelectorAll(".card")[1].onclick = showTrips;
 
   document.querySelectorAll(".card")[2].onclick = function () {
     alert("Statistics coming soon.");
