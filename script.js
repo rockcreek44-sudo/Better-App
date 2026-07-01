@@ -24,10 +24,55 @@ window.onload = function () {
         </select>
 
         <label>Weight (lb)</label>
-        <input id="weight" type="text">
+        <select id="weight">
+          <option value="">Select Weight</option>
+          <option>Under 1 lb</option>
+          <option>1 lb</option>
+          <option>1.5 lb</option>
+          <option>2 lb</option>
+          <option>2.5 lb</option>
+          <option>3 lb</option>
+          <option>3.5 lb</option>
+          <option>4 lb</option>
+          <option>4.5 lb</option>
+          <option>5 lb</option>
+          <option>5.5 lb</option>
+          <option>6 lb</option>
+          <option>6.5 lb</option>
+          <option>7 lb</option>
+          <option>7.5 lb</option>
+          <option>8 lb</option>
+          <option>8.5 lb</option>
+          <option>9 lb</option>
+          <option>9.5 lb</option>
+          <option>10+ lb</option>
+        </select>
 
         <label>Length (inches)</label>
-        <input id="length" type="text">
+        <select id="length">
+          <option value="">Select Length</option>
+          <option>8"</option>
+          <option>9"</option>
+          <option>10"</option>
+          <option>11"</option>
+          <option>12"</option>
+          <option>13"</option>
+          <option>14"</option>
+          <option>15"</option>
+          <option>16"</option>
+          <option>17"</option>
+          <option>18"</option>
+          <option>19"</option>
+          <option>20"</option>
+          <option>21"</option>
+          <option>22"</option>
+          <option>23"</option>
+          <option>24"</option>
+          <option>25"</option>
+          <option>26"</option>
+          <option>27"</option>
+          <option>28"+</option>
+        </select>
 
         <label>Lake / Pond</label>
         <input id="lake" type="text">
@@ -91,7 +136,9 @@ window.onload = function () {
         c.species +
         " - " +
         c.weight +
-        " lb\n\n";
+        " lb - " +
+        c.length +
+        "\n\n";
 
     });
 
