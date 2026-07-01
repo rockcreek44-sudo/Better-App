@@ -115,3 +115,39 @@ footer p {
   letter-spacing: 4px;
   color: #cfcfcf;
 }
+.form-card {
+  background: rgba(20,20,20,.85);
+  border: 2px solid #d40000;
+  border-radius: 18px;
+  padding: 20px;
+  margin-top: 24px;
+  box-shadow: 0 0 18px rgba(212,0,0,.35);
+}
+
+.form-card h2 {
+  margin-top: 0;
+  color: white;
+}
+
+.form-card label {
+  display: block;
+  color: #fff;
+  margin: 14px 0 6px;
+  font-weight: bold;
+}
+
+.form-card input,
+.form-card select,
+.form-card textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.form-card textarea {
+  min-height: 120px;
+  resize: vertical;
+}
