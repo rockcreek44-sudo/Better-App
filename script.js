@@ -1,15 +1,21 @@
-document.querySelector(".primary").addEventListener("click", function () {
-    alert("🎣 Log a Catch is coming next! This button will soon open the catch form.");
-});
+window.onload = function () {
 
-document.querySelectorAll(".card")[1].addEventListener("click", function () {
+  const cards = document.querySelectorAll(".card");
+
+  cards[0].onclick = function () {
+    alert("🎣 Log a Catch is coming next!");
+  };
+
+  cards[1].onclick = function () {
     alert("📍 My Trips is coming soon.");
-});
+  };
 
-document.querySelectorAll(".card")[2].addEventListener("click", function () {
+  cards[2].onclick = function () {
     alert("📊 Statistics is coming soon.");
-});
+  };
 
-document.querySelectorAll(".card")[3].addEventListener("click", function () {
+  cards[3].onclick = function () {
     alert("⚙️ Settings is coming soon.");
-});
+  };
+
+};
