@@ -78,7 +78,16 @@ window.onload = function () {
         <input id="lake" type="text">
 
         <label>Lure</label>
-        <input id="lure" type="text">
+<select id="lure">
+  <option value="">Select Lure</option>
+  <option>Workhorse</option>
+  <option>Mini</option>
+  <option>Mesh</option>
+  <option>Darkhorse</option>
+  <option>Karashi</option>
+  <option>Swim Jig</option>
+  <option>Other</option>
+</select>
 
         <label>Notes</label>
         <textarea id="notes"></textarea>
