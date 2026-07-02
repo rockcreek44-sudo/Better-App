@@ -25,7 +25,7 @@ function homeScreen() {
               <small>${catchItem.date}</small><br>
               <button class="card danger" onclick="window.deleteCatch(${index})">Delete</button>
   </div>
-        `).join("")}
+        `).join("")} 
       </div>
     </section>
   `;
