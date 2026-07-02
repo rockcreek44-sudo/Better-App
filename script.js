@@ -33,6 +33,15 @@ function homeScreen() {
   document.getElementById("newCatch").onclick = showCatchForm;
 }
 
+function deleteCatch(index) {
+  const catches = JSON.parse(localStorage.getItem("catches")) || [];
+  catches.splice(index, 1);
+  localStorage.setItem("catches", JSON.stringify(catches));
+  homeScreen();
+}
+
+window.deleteCatch = deleteCatch;
+
   function showCatchForm() {
     app.innerHTML = `
       <section class="hero">
