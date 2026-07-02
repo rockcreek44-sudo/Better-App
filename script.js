@@ -2,9 +2,34 @@ window.onload = function () {
 
   const app = document.querySelector(".app");
 
-  function homeScreen() {
-    location.reload();
-  }
+function homeScreen() {
+  const catches = JSON.parse(localStorage.getItem("catches")) || [];
+
+  app.innerHTML = `
+    <section class="hero">
+      <div class="brand">2° BAITS&trade;</div>
+      <div class="tagline">LOG A BASS</div>
+    </section>
+
+    <section class="form-card">
+      <button class="card primary" id="newCatch">Log New Catch</button>
+      <h2>Saved Catches</h2>
+      <div>
+        ${catches.length === 0 ? "<p>No catches saved yet.</p>" : catches.map(catchItem => `
+          <div class="catch-card">
+            <strong>${catchItem.species}</strong><br>
+            ${catchItem.weight} • ${catchItem.length}<br>
+            ${catchItem.lure}<br>
+            ${catchItem.lake}<br>
+            <small>${catchItem.date}</small>
+          </div>
+        `).join("")}
+      </div>
+    </section>
+  `;
+
+  document.getElementById("newCatch").onclick = showCatchForm;
+}
 
   function showCatchForm() {
     app.innerHTML = `
