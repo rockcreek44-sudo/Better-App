@@ -3,34 +3,46 @@ window.onload = function () {
   const app = document.querySelector(".app");
 
 function homeScreen() {
-  const catches = JSON.parse(localStorage.getItem("catches")) || [];
-
   app.innerHTML = `
     <section class="hero">
-      <div class="brand">2° BAITS&trade;</div> 
-      <div class="tagline">LOG A BASS</div>
+      <div class="brand">2° BAITS&trade;</div>
+      <div class="tagline">BUILT ON THE WATER</div>
     </section>
 
-    <section class="form-card">
-      <button class="card primary" id="newCatch">Log New Catch</button>
-      <h2>Saved Catches</h2>
-      <div>
-        ${catches.length === 0 ? "<p>No catches saved yet.</p>" : catches.map((catchItem, index) => `
-          <div class="catch-card">
-            <strong>${catchItem.species}</strong><br>
-            ${catchItem.weight} • ${catchItem.length}<br>
-            ${catchItem.lure}<br>
-            ${catchItem.lake}<br>
-            
-              <small>${catchItem.date}</small><br>
-              <button class="card danger" onclick="window.deleteCatch(${index})">Delete</button>
-  </div>
-        `).join("")} 
-      </div>
+    <section class="menu-grid">
+      <button class="card primary" id="newCatch">
+        <div class="icon">🐟</div>
+        <h2>Log a Catch</h2>
+        <p>Record a new fish</p>
+      </button>
+
+      <button class="card" id="myTrips">
+        <div class="icon">📍</div>
+        <h2>My Trips</h2>
+        <p>View your history</p>
+      </button>
+
+      <button class="card" id="stats">
+        <div class="icon">📊</div>
+        <h2>Statistics</h2>
+        <p>Analyze your data</p>
+      </button>
+
+      <button class="card" id="settings">
+        <div class="icon">⚙️</div>
+        <h2>Settings</h2>
+        <p>Preferences & Gear</p>
+      </button>
     </section>
+
+    <div class="footer-logo">2°</div>
+    <div class="footer-text">BUILT BY ANGLERS. FOR ANGLERS.</div>
   `;
 
   document.getElementById("newCatch").onclick = showCatchForm;
+  document.getElementById("myTrips").onclick = showTrips;
+  document.getElementById("stats").onclick = () => alert("Statistics coming soon.");
+  document.getElementById("settings").onclick = () => alert("Settings coming soon.");
 }
 
 function deleteCatch(index) {
