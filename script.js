@@ -15,7 +15,7 @@ function homeScreen() {
       <button class="card primary" id="newCatch">Log New Catch</button>
       <h2>Saved Catches</h2>
       <div>
-        ${catches.length === 0 ? "<p>No catches saved yet.</p>" : catches.map(catchItem => `
+        ${catches.length === 0 ? "<p>No catches saved yet.</p>" : catches.map((catchItem, index) => `
           <div class="catch-card">
             <strong>${catchItem.species}</strong><br>
             ${catchItem.weight} • ${catchItem.length}<br>
