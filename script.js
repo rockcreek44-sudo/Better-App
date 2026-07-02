@@ -7,7 +7,7 @@ function homeScreen() {
 
   app.innerHTML = `
     <section class="hero">
-      <div class="brand">2° BAITS&trade;</div>
+      <div class="brand">2° BAITS&trade;</div> 
       <div class="tagline">LOG A BASS</div>
     </section>
 
