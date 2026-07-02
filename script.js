@@ -147,7 +147,13 @@ window.onload = function () {
     let catchCards = "";
 
     if (catches.length === 0) {
-      catchCards = `<p>No catches saved yet.</p>`;
+      catchCards = `
+  <section class="form-card empty-state">
+    <h2>🎣 No catches yet</h2>
+    <p>Log your first bass and start building your fishing history.</p>
+    <button class="back-button" id="emptyLogCatch">Log My First Catch</button>
+  </section>
+`;
     } else {
       catchCards = catches
         .map(function (c, index) {
@@ -188,8 +194,12 @@ window.onload = function () {
       ${catchCards}
     `;
 
-    document.getElementById("backHome").onclick = homeScreen;
+    document.getElementById("backHome").onclick = homeScreen; 
+    if (document.getElementById("emptyLogCatch")) {
+  document.getElementById("emptyLogCatch").onclick = showCatchForm;
+}
   }
 
   homeScreen();
+  
 };
