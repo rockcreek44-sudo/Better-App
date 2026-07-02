@@ -21,8 +21,10 @@ function homeScreen() {
             ${catchItem.weight} • ${catchItem.length}<br>
             ${catchItem.lure}<br>
             ${catchItem.lake}<br>
-            <small>${catchItem.date}</small>
-          </div>
+            
+              <small>${catchItem.date}</small><br>
+              <button class="card danger" onclick="window.deleteCatch(${index})">Delete</button>
+  </div>
         `).join("")}
       </div>
     </section>
