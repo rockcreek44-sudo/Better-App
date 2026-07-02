@@ -182,7 +182,7 @@ window.onload = function () {
 
       <section class="form-card">
         <h2>Fishing Log</h2>
-        <button class="card primary" id="backHome">🏠 Back Home</button>
+        <button class="back-button" id="backHome">🏠 Back Home</button>
       </section>
 
       ${catchCards}
