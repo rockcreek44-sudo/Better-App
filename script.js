@@ -91,6 +91,12 @@ function showCatchForm(editIndex = null) {
     <section class="form-card">
       <h2>${editing ? "Edit Catch" : "New Catch"}</h2>
       <form id="catchForm">
+      <label for="catchDate">Date</label>
+<input id="catchDate" type="date" value="${oldCatch.catchDate || new Date().toISOString().slice(0,10)}" />
+
+<label for="catchTime">Time</label>
+<input id="catchTime" type="time" value="${oldCatch.catchTime || new Date().toTimeString().slice(0,5)}" />
+
         <label for="species">Bass Type</label>
         <select id="species">${optionList(SPECIES, oldCatch.species || "Largemouth Bass")}</select>
 
@@ -118,6 +124,8 @@ function showCatchForm(editIndex = null) {
   document.getElementById("catchForm").addEventListener("submit", event => {
     event.preventDefault();
     const savedCatch = {
+      catchDate: document.getElementById("catchDate").value,
+catchTime: document.getElementById("catchTime").value,
       species: document.getElementById("species").value,
       weight: document.getElementById("weight").value,
       length: document.getElementById("length").value,
