@@ -76,7 +76,7 @@ window.onload = function () {
         <label>Weight (lb)</label>
         <select id="weight">
           <option value="">Select Weight</option>
-          ${Array.from({ length: 15 }, (_, i) => `<option>${i + 1} lb</option>`).join("")}
+           ${["<1 lb","1 lb","2 lb","3 lb","4 lb","5 lb","6 lb","7 lb","8 lb","9 lb","10 lb","11 lb","12 lb","13 lb","14 lb","15+ lb+"].map(w => `<option>${w}</option>`).join("")}
         </select>
 
         <label>Length (inches)</label>
