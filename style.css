@@ -13,6 +13,17 @@ body {
     linear-gradient(135deg, #050505, #151515 45%, #070707);
 }
 
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
 .app {
   min-height: 100vh;
   max-width: 430px;
@@ -45,6 +56,11 @@ body {
   color: #d40000;
 }
 
+.brand span {
+  font-size: 18px;
+  vertical-align: top;
+}
+
 .tagline {
   margin-top: 16px;
   font-size: 20px;
@@ -60,21 +76,23 @@ body {
   gap: 14px;
 }
 
-.card {
-  min-height: 170px;
+.card,
+.action {
   border: 2px solid #cfcfcf;
   border-radius: 22px;
-  background:
-    linear-gradient(145deg, #f0f0f0, #a9a9a9 45%, #e8e8e8);
+  background: linear-gradient(145deg, #f0f0f0, #a9a9a9 45%, #e8e8e8);
   color: #070707;
-  box-shadow:
-    0 0 0 3px #111,
-    0 0 18px rgba(212, 0, 0, 0.45);
-  padding: 18px 10px;
+  box-shadow: 0 0 0 3px #111, 0 0 18px rgba(212, 0, 0, 0.45);
   text-align: center;
 }
 
-.card.primary {
+.card {
+  min-height: 170px;
+  padding: 18px 10px;
+}
+
+.card.primary,
+.primary-action {
   border-color: #d40000;
 }
 
@@ -115,8 +133,9 @@ footer p {
   letter-spacing: 4px;
   color: #cfcfcf;
 }
+
 .form-card {
-  background: rgba(20,20,20,.85);
+  background: rgba(20,20,20,.88);
   border: 2px solid #d40000;
   border-radius: 18px;
   padding: 20px;
@@ -125,7 +144,7 @@ footer p {
 }
 
 .form-card h2 {
-  margin-top: 0;
+  margin-bottom: 12px;
   color: white;
 }
 
@@ -145,6 +164,8 @@ footer p {
   border: none;
   box-sizing: border-box;
   margin-bottom: 10px;
+  font-family: Arial, sans-serif;
+  font-weight: 700;
 }
 
 .form-card textarea {
@@ -152,11 +173,59 @@ footer p {
   resize: vertical;
 }
 
-.back-button {
-    width: auto;
-    min-height: auto;
-    padding: 12px 20px;
-    font-size: 16px;
-    border-radius: 12px;
-    display: inline-block;
+.action {
+  width: 100%;
+  min-height: auto;
+  padding: 13px 16px;
+  margin-top: 12px;
+  border-radius: 12px;
+  font-size: 16px;
+}
+
+.danger {
+  border-color: #d40000;
+  color: #8b0000;
+}
+
+.catch-card {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 14px;
+  padding: 14px;
+  margin: 14px 0;
+  font-family: Arial, sans-serif;
+}
+
+.catch-card h3 {
+  font-family: Impact, Haettenschweiler, "Arial Black", sans-serif;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.catch-card p,
+.empty {
+  font-family: Arial, sans-serif;
+  line-height: 1.45;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,.08);
+  border-radius: 12px;
+  padding: 12px;
+  margin: 10px 0;
+  font-family: Arial, sans-serif;
+}
+
+.stat strong {
+  color: #fff;
 }

@@ -1,172 +1,223 @@
 const app = document.getElementById("app");
-
 const STORAGE_KEY = "betterAppCatches";
+const LURES = ["Workhorse", "Mini", "Mesh", "Darkhorse", "Karashi", "Swim Jig", "Other"];
+const SPECIES = ["Largemouth Bass", "Smallmouth Bass", "Spotted Bass"];
+const WEIGHTS = ["<1 lb", "1 lb", "2 lb", "3 lb", "4 lb", "5 lb", "6 lb", "7 lb", "8 lb", "9 lb", "10 lb", "11 lb", "12 lb", "13 lb", "14 lb", "15 lb+"];
+const LENGTHS = Array.from({ length: 23 }, (_, i) => `${i + 8}\"`).concat("31\"+");
 
 function getCatches() {
-  return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  } catch (error) {
+    return [];
+  }
 }
 
 function saveCatches(catches) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(catches));
 }
 
-function showHome() {
-  const catches = getCatches();
+function escapeHtml(value = "") {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 
-  app.innerHTML = `
+function optionList(items, selected = "", placeholder = "") {
+  const placeholderOption = placeholder ? `<option value="">${placeholder}</option>` : "";
+  return placeholderOption + items.map(item => {
+    const safe = escapeHtml(item);
+    return `<option value="${safe}" ${item === selected ? "selected" : ""}>${safe}</option>`;
+  }).join("");
+}
+
+function header(tagline = "BUILT ON THE WATER") {
+  return `
     <section class="hero">
-      <div class="brand">2° BAITS&trade;</div>
-      <div class="tagline">LOG A BASS</div>
-    </section>
-
-    <section class="card">
-      <h2>Fishing Log</h2>
-      <p>Total Catches: ${catches.length}</p>
-      <button class="card primary" id="newCatch">Log Catch</button>
-      <button class="card" id="viewCatches">View Catches</button>
+      <div class="brand">2°BAITS<span>™</span></div>
+      <div class="tagline">${escapeHtml(tagline)}</div>
     </section>
   `;
+}
 
-  document.getElementById("newCatch").onclick = showCatchForm;
-  document.getElementById("viewCatches").onclick = showCatches;
+function showHome() {
+  const catches = getCatches();
+  app.innerHTML = `
+    ${header()}
+    <section class="grid">
+      <button class="card primary" id="logCatch" type="button">
+        <div class="icon">🐟</div>
+        <h2>Log a Catch</h2>
+        <p>Record a new fish</p>
+      </button>
+      <button class="card" id="myTrips" type="button">
+        <div class="icon">📍</div>
+        <h2>My Trips</h2>
+        <p>${catches.length} catches saved</p>
+      </button>
+      <button class="card" id="stats" type="button">
+        <div class="icon">📊</div>
+        <h2>Statistics</h2>
+        <p>Analyze your data</p>
+      </button>
+      <button class="card" id="settings" type="button">
+        <div class="icon">⚙️</div>
+        <h2>Settings</h2>
+        <p>Preferences & gear</p>
+      </button>
+    </section>
+    <footer>
+      <div class="small-logo">2°</div>
+      <p>BUILT BY ANGLERS. FOR ANGLERS.</p>
+    </footer>
+  `;
+
+  document.getElementById("logCatch").addEventListener("click", () => showCatchForm());
+  document.getElementById("myTrips").addEventListener("click", showCatches);
+  document.getElementById("stats").addEventListener("click", showStats);
+  document.getElementById("settings").addEventListener("click", showSettings);
 }
 
 function showCatchForm(editIndex = null) {
   const catches = getCatches();
   const editing = editIndex !== null;
-  const catchData = editing ? catches[editIndex] : {};
+  const oldCatch = editing ? catches[editIndex] || {} : {};
 
   app.innerHTML = `
-    <section class="hero">
-      <div class="brand">2° BAITS&trade;</div>
-      <div class="tagline">LOG A BASS</div>
-    </section>
-
+    ${header(editing ? "EDIT CATCH" : "LOG A CATCH")}
     <section class="form-card">
-      <h2>${editing ? "Edit Catch" : "Bass Catch"}</h2>
+      <h2>${editing ? "Edit Catch" : "New Catch"}</h2>
+      <form id="catchForm">
+        <label for="species">Bass Type</label>
+        <select id="species">${optionList(SPECIES, oldCatch.species || "Largemouth Bass")}</select>
 
-      <label>Species</label>
-      <select id="species">
-        <option>Largemouth Bass</option>
-        <option>Smallmouth Bass</option>
-        <option>Spotted Bass</option>
-      </select>
+        <label for="weight">Weight</label>
+        <select id="weight">${optionList(WEIGHTS, oldCatch.weight || "", "Select Weight")}</select>
 
-      <label>Weight (lb)</label>
-      <select id="weight">
-        <option value="">Select Weight</option>
-        ${["<1 lb","1 lb","2 lb","3 lb","4 lb","5 lb","6 lb","7 lb","8 lb","9 lb","10 lb","11 lb","12 lb","13 lb","14 lb","15 lb+"]
-          .map(w => `<option>${w}</option>`)
-          .join("")}
-      </select>
+        <label for="length">Length</label>
+        <select id="length">${optionList(LENGTHS, oldCatch.length || "", "Select Length")}</select>
 
-      <label>Length (inches)</label>
-      <select id="length">
-        <option value="">Select Length</option>
-        ${Array.from({ length: 21 }, (_, i) => `<option>${i + 8}"</option>`).join("")}
-        <option>30"+</option>
-      </select>
+        <label for="lake">Lake / Pond</label>
+        <input id="lake" type="text" placeholder="Where did you catch it?" value="${escapeHtml(oldCatch.lake || "")}" />
 
-      <label>Lake / Pond</label>
-      <input id="lake" type="text">
+        <label for="lure">Lure</label>
+        <select id="lure">${optionList(LURES, oldCatch.lure || "", "Select Lure")}</select>
 
-      <label>Lure</label>
-      <select id="lure">
-        <option value="">Select Lure</option>
-        <option>Workhorse</option>
-        <option>Mini</option>
-        <option>Mesh</option>
-        <option>Darkhorse</option>
-        <option>Karashi</option>
-        <option>Swim Jig</option>
-        <option>Other</option>
-      </select>
+        <label for="notes">Notes</label>
+        <textarea id="notes" placeholder="Water color, cover, retrieve, etc.">${escapeHtml(oldCatch.notes || "")}</textarea>
 
-      <label>Notes</label>
-      <textarea id="notes"></textarea>
-
-      <button class="card primary" id="saveCatch">${editing ? "Save Changes" : "Save Catch"}</button>
-      <button class="card" id="backHome">Back Home</button>
+        <button class="action primary-action" type="submit">${editing ? "Save Changes" : "Save Catch"}</button>
+        <button class="action" id="backHome" type="button">Back Home</button>
+      </form>
     </section>
   `;
 
-  if (editing) {
-    document.getElementById("species").value = catchData.species || "Largemouth Bass";
-    document.getElementById("weight").value = catchData.weight || "";
-    document.getElementById("length").value = catchData.length || "";
-    document.getElementById("lake").value = catchData.lake || "";
-    document.getElementById("lure").value = catchData.lure || "";
-    document.getElementById("notes").value = catchData.notes || "";
-  }
-
-  document.getElementById("saveCatch").onclick = function () {
-    const newCatch = {
+  document.getElementById("catchForm").addEventListener("submit", event => {
+    event.preventDefault();
+    const savedCatch = {
       species: document.getElementById("species").value,
       weight: document.getElementById("weight").value,
       length: document.getElementById("length").value,
-      lake: document.getElementById("lake").value,
+      lake: document.getElementById("lake").value.trim(),
       lure: document.getElementById("lure").value,
-      notes: document.getElementById("notes").value,
-      date: catchData.date || new Date().toLocaleDateString()
+      notes: document.getElementById("notes").value.trim(),
+      date: oldCatch.date || new Date().toLocaleDateString()
     };
 
-    if (editing) {
-      catches[editIndex] = newCatch;
-    } else {
-      catches.push(newCatch);
-    }
+    if (editing) catches[editIndex] = savedCatch;
+    else catches.push(savedCatch);
 
     saveCatches(catches);
     showCatches();
-  };
+  });
 
-  document.getElementById("backHome").onclick = showHome;
+  document.getElementById("backHome").addEventListener("click", showHome);
 }
 
 function showCatches() {
   const catches = getCatches();
-
   app.innerHTML = `
-    <section class="hero">
-      <div class="brand">2° BAITS&trade;</div>
-      <div class="tagline">LOG A BASS</div>
-    </section>
-
-    <section class="card">
+    ${header("MY TRIPS")}
+    <section class="form-card">
       <h2>Saved Catches</h2>
-
-      ${
-        catches.length === 0
-          ? `<p>No catches logged yet. Go stick one.</p>`
-          : catches.map((c, index) => `
-              <div class="catch-card">
-                <h3>${c.species || "Bass"}</h3>
-                <p><strong>Date:</strong> ${c.date || ""}</p>
-                <p><strong>Weight:</strong> ${c.weight || "Not entered"}</p>
-                <p><strong>Length:</strong> ${c.length || "Not entered"}</p>
-                <p><strong>Lake / Pond:</strong> ${c.lake || "Not entered"}</p>
-                <p><strong>Lure:</strong> ${c.lure || "Not entered"}</p>
-                <p><strong>Notes:</strong> ${c.notes || "None"}</p>
-                <button class="card" onclick="showCatchForm(${index})">Edit</button>
-                <button class="card" onclick="deleteCatch(${index})">Delete</button>
-              </div>
-            `).join("")
-      }
-
-      <button class="card primary" id="addAnother">Log Another Catch</button>
-      <button class="card" id="backHome">Back Home</button>
+      ${catches.length === 0 ? `<p class="empty">No catches logged yet.</p>` : catches.map((catchItem, index) => `
+        <article class="catch-card">
+          <h3>${escapeHtml(catchItem.species || "Bass")}</h3>
+          <p><strong>Date:</strong> ${escapeHtml(catchItem.date || "")}</p>
+          <p><strong>Weight:</strong> ${escapeHtml(catchItem.weight || "Not entered")}</p>
+          <p><strong>Length:</strong> ${escapeHtml(catchItem.length || "Not entered")}</p>
+          <p><strong>Lake / Pond:</strong> ${escapeHtml(catchItem.lake || "Not entered")}</p>
+          <p><strong>Lure:</strong> ${escapeHtml(catchItem.lure || "Not entered")}</p>
+          <p><strong>Notes:</strong> ${escapeHtml(catchItem.notes || "None")}</p>
+          <div class="row">
+            <button class="action editBtn" type="button" data-index="${index}">Edit</button>
+            <button class="action danger deleteBtn" type="button" data-index="${index}">Delete</button>
+          </div>
+        </article>
+      `).join("")}
+      <button class="action primary-action" id="addCatch" type="button">Log Another Catch</button>
+      <button class="action" id="backHome" type="button">Back Home</button>
     </section>
   `;
 
-  document.getElementById("addAnother").onclick = showCatchForm;
-  document.getElementById("backHome").onclick = showHome;
+  document.getElementById("addCatch").addEventListener("click", () => showCatchForm());
+  document.getElementById("backHome").addEventListener("click", showHome);
+  document.querySelectorAll(".editBtn").forEach(button => {
+    button.addEventListener("click", () => showCatchForm(Number(button.dataset.index)));
+  });
+  document.querySelectorAll(".deleteBtn").forEach(button => {
+    button.addEventListener("click", () => {
+      const index = Number(button.dataset.index);
+      const updated = getCatches();
+      updated.splice(index, 1);
+      saveCatches(updated);
+      showCatches();
+    });
+  });
 }
 
-function deleteCatch(index) {
+function showStats() {
   const catches = getCatches();
-  catches.splice(index, 1);
-  saveCatches(catches);
-  showCatches();
+  app.innerHTML = `
+    ${header("STATISTICS")}
+    <section class="form-card">
+      <h2>Stats</h2>
+      <div class="stat"><span>Total Catches</span><strong>${catches.length}</strong></div>
+      <div class="stat"><span>Top Lure</span><strong>${escapeHtml(getTopLure(catches))}</strong></div>
+      <div class="stat"><span>Most Recent</span><strong>${escapeHtml(catches.at(-1)?.date || "None yet")}</strong></div>
+      <button class="action" id="backHome" type="button">Back Home</button>
+    </section>
+  `;
+  document.getElementById("backHome").addEventListener("click", showHome);
 }
 
-showHome();
+function getTopLure(catches) {
+  const counts = {};
+  catches.forEach(catchItem => {
+    if (catchItem.lure) counts[catchItem.lure] = (counts[catchItem.lure] || 0) + 1;
+  });
+  const top = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+  return top ? `${top[0]} (${top[1]})` : "None yet";
+}
+
+function showSettings() {
+  app.innerHTML = `
+    ${header("SETTINGS")}
+    <section class="form-card">
+      <h2>Settings</h2>
+      <p class="empty">Gear and preferences will go here next.</p>
+      <button class="action danger" id="clearData" type="button">Clear Saved Catches</button>
+      <button class="action" id="backHome" type="button">Back Home</button>
+    </section>
+  `;
+  document.getElementById("clearData").addEventListener("click", () => {
+    localStorage.removeItem(STORAGE_KEY);
+    showHome();
+  });
+  document.getElementById("backHome").addEventListener("click", showHome);
+}
+
+if (app) showHome();
