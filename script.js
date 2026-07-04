@@ -103,6 +103,8 @@ function showCatchForm(editIndex = null) {
 <select id="weather">${optionList(["Sunny", "Partly Cloudy", "Cloudy", "Rain", "Storm"], oldCatch.weather || "", "Select Weather")}</select>
 <label for="waterClarity">Water Clarity</label>
 <select id="waterClarity">${optionList(["Clear", "Slightly Stained", "Stained", "Muddy"], oldCatch.waterClarity || "", "Select Water Clarity")}</select>
+<label for="wind">Wind</label>
+<select id="wind">${optionList(["Calm", "Light", "Moderate", "Strong"], oldCatch.wind || "", "Select Wind")}</select>
 <label for="species">Bass Type</label>
         <select id="species">${optionList(SPECIES, oldCatch.species || "Largemouth Bass")}</select>
 
@@ -133,6 +135,7 @@ function showCatchForm(editIndex = null) {
     const savedCatch = {
       waterTemp: document.getElementById("waterTemp").value,
       weather: document.getElementById("weather").value,
+      wind: document.getElementById("wind").value,
       waterClarity: document.getElementById("waterClarity").value,
       catchDate: document.getElementById("catchDate").value,
 catchTime: document.getElementById("catchTime").value,
