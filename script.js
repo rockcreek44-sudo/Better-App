@@ -99,6 +99,8 @@ function showCatchForm(editIndex = null) {
 
  <label for="waterTemp">Water Temp (°F)</label>
 <input id="waterTemp" type="number" min="32" max="120" placeholder="Ex: 72" value="${oldCatch.waterTemp || ""}" />      
+<label for="weather">Weather</label>
+<select id="weather">${optionList(["Sunny", "Partly Cloudy", "Cloudy", "Rain", "Storm"], oldCatch.weather || "", "Select Weather")}</select>
 <label for="species">Bass Type</label>
         <select id="species">${optionList(SPECIES, oldCatch.species || "Largemouth Bass")}</select>
 
@@ -128,6 +130,7 @@ function showCatchForm(editIndex = null) {
 
     const savedCatch = {
       waterTemp: document.getElementById("waterTemp").value,
+      weather: document.getElementById("weather").value,
       catchDate: document.getElementById("catchDate").value,
 catchTime: document.getElementById("catchTime").value,
       species: document.getElementById("species").value,
