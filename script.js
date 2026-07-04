@@ -125,8 +125,9 @@ function showCatchForm(editIndex = null) {
 
   document.getElementById("catchForm").addEventListener("submit", event => {
     event.preventDefault();
-   waterTemp: document.getElementById("waterTemp").value, 
+
     const savedCatch = {
+      waterTemp: document.getElementById("waterTemp").value,
       catchDate: document.getElementById("catchDate").value,
 catchTime: document.getElementById("catchTime").value,
       species: document.getElementById("species").value,
