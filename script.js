@@ -105,6 +105,8 @@ function showCatchForm(editIndex = null) {
 <select id="waterClarity">${optionList(["Clear", "Slightly Stained", "Stained", "Muddy"], oldCatch.waterClarity || "", "Select Water Clarity")}</select>
 <label for="wind">Wind</label>
 <select id="wind">${optionList(["Calm", "Light", "Moderate", "Strong"], oldCatch.wind || "", "Select Wind")}</select>
+<label for="airTemp">Air Temp (°F)</label>
+<input id="airTemp" type="number" min="-20" max="130" placeholder="Ex: 78" value="${oldCatch.airTemp || ""}" />
 <label for="species">Bass Type</label>
         <select id="species">${optionList(SPECIES, oldCatch.species || "Largemouth Bass")}</select>
 
@@ -136,6 +138,7 @@ function showCatchForm(editIndex = null) {
       waterTemp: document.getElementById("waterTemp").value,
       weather: document.getElementById("weather").value,
       wind: document.getElementById("wind").value,
+      airTemp: document.getElementById("airTemp").value,
       waterClarity: document.getElementById("waterClarity").value,
       catchDate: document.getElementById("catchDate").value,
 catchTime: document.getElementById("catchTime").value,
