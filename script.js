@@ -37,7 +37,7 @@ function optionList(items, selected = "", placeholder = "") {
 function header(tagline = "BUILT ON THE WATER") {
   return `
     <section class="hero">
-      <div class="brand">2°BAITS<span>™</span></div>
+<button class="brand brand-button" type="button" onclick="showHome()">2°BAITS<span>™</span></button>
       <div class="tagline">${escapeHtml(tagline)}</div>
     </section>
   `;
