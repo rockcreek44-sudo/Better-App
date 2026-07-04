@@ -119,7 +119,9 @@ function showCatchForm(editIndex = null) {
         <label for="lake">Lake / Pond</label>
         <input id="lake" type="text" placeholder="Where did you catch it?" value="${escapeHtml(oldCatch.lake || "")}" />
 
-       <label for="baitColor">Bait Color</label>
+       <label for="fishStage">Fish Stage</label>
+<select id="fishStage">${optionList(["Pre-Spawn","Spawn","Post-Spawn","Summer","Fall","Winter"], oldCatch.fishStage || "", "Select Fish Stage")}</select>
+        <label for="baitColor">Bait Color</label>
 <input id="baitColor" type="text" placeholder="Ex: Green Pumpkin Shad" value="${escapeHtml(oldCatch.baitColor || "")}" />
         <label for="lure">Lure</label>
         <select id="lure">${optionList(LURES, oldCatch.lure || "", "Select Lure")}</select>
@@ -150,6 +152,7 @@ catchTime: document.getElementById("catchTime").value,
       lake: document.getElementById("lake").value.trim(),
       lure: document.getElementById("lure").value,
       baitColor: document.getElementById("baitColor").value,
+     fishStage: document.getElementById("fishStage").value, 
       notes: document.getElementById("notes").value.trim(),
       date: oldCatch.date || new Date().toLocaleDateString()
     };
