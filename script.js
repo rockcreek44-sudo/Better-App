@@ -119,6 +119,8 @@ function showCatchForm(editIndex = null) {
         <label for="lake">Lake / Pond</label>
         <input id="lake" type="text" placeholder="Where did you catch it?" value="${escapeHtml(oldCatch.lake || "")}" />
 
+       <label for="baitColor">Bait Color</label>
+<input id="baitColor" type="text" placeholder="Ex: Green Pumpkin Shad" value="${escapeHtml(oldCatch.baitColor || "")}" />
         <label for="lure">Lure</label>
         <select id="lure">${optionList(LURES, oldCatch.lure || "", "Select Lure")}</select>
 
@@ -147,6 +149,7 @@ catchTime: document.getElementById("catchTime").value,
       length: document.getElementById("length").value,
       lake: document.getElementById("lake").value.trim(),
       lure: document.getElementById("lure").value,
+      baitColor: document.getElementById("baitColor").value,
       notes: document.getElementById("notes").value.trim(),
       date: oldCatch.date || new Date().toLocaleDateString()
     };
