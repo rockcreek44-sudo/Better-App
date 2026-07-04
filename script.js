@@ -97,7 +97,9 @@ function showCatchForm(editIndex = null) {
 <label for="catchTime">Time</label>
 <input id="catchTime" type="time" value="${oldCatch.catchTime || new Date().toTimeString().slice(0,5)}" />
 
-        <label for="species">Bass Type</label>
+ <label for="waterTemp">Water Temp (°F)</label>
+<input id="waterTemp" type="number" min="32" max="120" placeholder="Ex: 72" value="${oldCatch.waterTemp || ""}" />      
+<label for="species">Bass Type</label>
         <select id="species">${optionList(SPECIES, oldCatch.species || "Largemouth Bass")}</select>
 
         <label for="weight">Weight</label>
@@ -123,6 +125,7 @@ function showCatchForm(editIndex = null) {
 
   document.getElementById("catchForm").addEventListener("submit", event => {
     event.preventDefault();
+   waterTemp: document.getElementById("waterTemp").value, 
     const savedCatch = {
       catchDate: document.getElementById("catchDate").value,
 catchTime: document.getElementById("catchTime").value,
