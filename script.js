@@ -103,6 +103,8 @@ function showCatchForm(editIndex = null) {
 <select id="weather">${optionList(["Sunny", "Partly Cloudy", "Cloudy", "Rain", "Storm"], oldCatch.weather || "", "Select Weather")}</select>
 <label for="waterClarity">Water Clarity</label>
 <select id="waterClarity">${optionList(["Clear", "Slightly Stained", "Stained", "Muddy"], oldCatch.waterClarity || "", "Select Water Clarity")}</select>
+<label for="windDirection">Wind Direction</label>
+<select id="windDirection">${optionList(["N","NE","E","SE","S","SW","W","NW","Variable"], oldCatch.windDirection || "", "Select Wind Direction")}</select>
 <label for="wind">Wind</label>
 <select id="wind">${optionList(["Calm", "Light", "Moderate", "Strong"], oldCatch.wind || "", "Select Wind")}</select>
 <label for="airTemp">Air Temp (°F)</label>
@@ -143,6 +145,7 @@ function showCatchForm(editIndex = null) {
       waterTemp: document.getElementById("waterTemp").value,
       weather: document.getElementById("weather").value,
       wind: document.getElementById("wind").value,
+      windDirection: document.getElementById("windDirection").value,
       airTemp: document.getElementById("airTemp").value,
       waterClarity: document.getElementById("waterClarity").value,
       catchDate: document.getElementById("catchDate").value,
