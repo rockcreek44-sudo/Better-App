@@ -113,8 +113,23 @@ function showCatchForm(editIndex = null) {
         <label for="lake">Lake / Pond</label>
         <input id="lake" type="text" placeholder="Where did you catch it?" value="${escapeHtml(oldCatch.lake || "")}" />
 
-        <label for="baitColor">Bait Color</label>
-        <input id="baitColor" type="text" placeholder="Ex: Green Pumpkin Shad" value="${escapeHtml(oldCatch.baitColor || "")}" />
+       <label for="baitColor">Bait Color</label>
+<select id="baitColor">${optionList([
+"Green Pumpkin",
+"Green Pumpkin Shad",
+"Black / Blue",
+"White",
+"White Shad",
+"Chartreuse White",
+"Bluegill",
+"Craw",
+"Brown",
+"Sexy Shad",
+"Threadfin Shad",
+"Gizzard Shad",
+"Fire Craw",
+"Other"
+], oldCatch.baitColor || "", "Select Bait Color")}</select>
 
         <label for="lure">Lure</label>
         <select id="lure">${optionList(lureOptions, oldCatch.lure || "", "Select Lure")}</select>
@@ -146,7 +161,7 @@ function showCatchForm(editIndex = null) {
       weight: document.getElementById("weight").value,
       length: document.getElementById("length").value,
       lake: document.getElementById("lake").value.trim(),
-      baitColor: document.getElementById("baitColor").value.trim(),
+      baitColor: document.getElementById("baitColor").value,
       lure: document.getElementById("lure").value,
       notes: document.getElementById("notes").value.trim()
     };
