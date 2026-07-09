@@ -1,29 +1,72 @@
 const app = document.getElementById("app");
 const STORAGE_KEY = "betterAppCatches";
 
-const lureOptions = ["Workhorse", "Mini", "Mesh", "Darkhorse", "Karashi", "Swim Jig", "Other"];
+const LURES = ["Workhorse", "Mini", "Mesh", "Darkhorse", "Karashi", "Swim Jig", "Other"];
+const SPECIES = ["Largemouth Bass", "Smallmouth Bass", "Spotted Bass"];
+const WEATHER = ["Sunny", "Partly Cloudy", "Cloudy", "Rain", "Storm"];
+const WATER_CLARITY = ["Clear", "Slightly Stained", "Stained", "Muddy"];
+const WIND = ["Calm", "Light", "Moderate", "Strong"];
+const WIND_DIRECTION = ["N", "NE", "E", "SE", "S", "SW", "W", "NW", "Variable"];
+const BAROMETRIC = ["Rising", "Stable", "Falling"];
+const FISH_STAGE = ["Pre-Spawn", "Spawn", "Post-Spawn", "Summer", "Fall", "Winter"];
+const WEIGHTS = ["<1 lb", "1 lb", "2 lb", "3 lb", "4 lb", "5 lb", "6 lb", "7 lb", "8 lb", "9 lb", "10 lb", "11 lb", "12 lb", "13 lb", "14 lb", "15 lb+"];
+const LENGTHS = Array.from({ length: 23 }, (_, i) => `${i + 8}"`).concat('31"+');
+
+const LAKES = [
+  "Pond",
+  "Lake",
+  "River",
+  "Creek",
+  "Reservoir",
+  "Farm Pond",
+  "Other"
+];
+
+const BAIT_COLORS = [
+  "Green Pumpkin",
+  "Green Pumpkin Shad",
+  "Black / Blue",
+  "White",
+  "White Shad",
+  "Chartreuse White",
+  "Bluegill",
+  "Craw",
+  "Brown",
+  "Sexy Shad",
+  "Threadfin Shad",
+  "Gizzard Shad",
+  "Fire Craw",
+  "Other"
+];
 
 function escapeHtml(value = "") {
-  return String(value).replace(/[&<>"']/g, char => ({
+  return String(value).replace(/[&<>"']/g, character => ({
     "&": "&amp;",
     "<": "&lt;",
     ">": "&gt;",
     '"': "&quot;",
     "'": "&#039;"
-  }[char]));
+  }[character]));
 }
 
 function optionList(options, selectedValue = "", placeholder = "Select") {
-  return `
-    <option value="">${placeholder}</option>
-    ${options.map(option => `
-      <option value="${escapeHtml(option)}" ${option === selectedValue ? "selected" : ""}>${escapeHtml(option)}</option>
-    `).join("")}
-  `;
+  const placeholderOption = `<option value="">${escapeHtml(placeholder)}</option>`;
+
+  const optionHtml = options.map(option => {
+    const safeOption = escapeHtml(option);
+    const selected = option === selectedValue ? "selected" : "";
+    return `<option value="${safeOption}" ${selected}>${safeOption}</option>`;
+  }).join("");
+
+  return placeholderOption + optionHtml;
 }
 
 function getCatches() {
-  return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  } catch {
+    return [];
+  }
 }
 
 function saveCatches(catches) {
@@ -34,7 +77,7 @@ function header(tagline = "BUILT ON THE WATER") {
   return `
     <section class="hero">
       <button class="brand brand-button" type="button" onclick="showHome()">2°BAITS<span>™</span></button>
-      <div class="tagline">${tagline}</div>
+      <div class="tagline">${escapeHtml(tagline)}</div>
     </section>
   `;
 }
@@ -45,12 +88,35 @@ function showHome() {
   app.innerHTML = `
     ${header()}
     <section class="grid">
-      <button class="card primary" id="logCatch"><div class="icon">🐟</div><h2>Log a Catch</h2><p>Record a new fish</p></button>
-      <button class="card" id="myTrips"><div class="icon">📍</div><h2>My Trips</h2><p>${catches.length} catches saved</p></button>
-      <button class="card" id="stats"><div class="icon">📊</div><h2>Statistics</h2><p>Analyze your data</p></button>
-      <button class="card" id="settings"><div class="icon">⚙️</div><h2>Settings</h2><p>Preferences & gear</p></button>
+      <button class="card primary" id="logCatch" type="button">
+        <div class="icon">🐟</div>
+        <h2>Log a Catch</h2>
+        <p>Record a new fish</p>
+      </button>
+
+      <button class="card" id="myTrips" type="button">
+        <div class="icon">📍</div>
+        <h2>My Trips</h2>
+        <p>${catches.length} catches saved</p>
+      </button>
+
+      <button class="card" id="stats" type="button">
+        <div class="icon">📊</div>
+        <h2>Statistics</h2>
+        <p>Analyze your data</p>
+      </button>
+
+      <button class="card" id="settings" type="button">
+        <div class="icon">⚙️</div>
+        <h2>Settings</h2>
+        <p>Preferences & gear</p>
+      </button>
     </section>
-    <footer><div class="small-logo">2°</div><p>BUILT BY ANGLERS. FOR ANGLERS.</p></footer>
+
+    <footer>
+      <div class="small-logo">2°</div>
+      <p>BUILT BY ANGLERS. FOR ANGLERS.</p>
+    </footer>
   `;
 
   document.getElementById("logCatch").onclick = () => showCatchForm();
@@ -81,58 +147,43 @@ function showCatchForm(editIndex = null) {
         <input id="waterTemp" type="number" min="32" max="120" placeholder="Ex: 72" value="${oldCatch.waterTemp || ""}" />
 
         <label for="weather">Weather</label>
-        <select id="weather">${optionList(["Sunny", "Partly Cloudy", "Cloudy", "Rain", "Storm"], oldCatch.weather || "", "Select Weather")}</select>
+        <select id="weather">${optionList(WEATHER, oldCatch.weather || "", "Select Weather")}</select>
 
         <label for="waterClarity">Water Clarity</label>
-        <select id="waterClarity">${optionList(["Clear", "Slightly Stained", "Stained", "Muddy"], oldCatch.waterClarity || "", "Select Water Clarity")}</select>
+        <select id="waterClarity">${optionList(WATER_CLARITY, oldCatch.waterClarity || "", "Select Water Clarity")}</select>
 
         <label for="windDirection">Wind Direction</label>
-        <select id="windDirection">${optionList(["N", "NE", "E", "SE", "S", "SW", "W", "NW", "Variable"], oldCatch.windDirection || "", "Select Wind Direction")}</select>
+        <select id="windDirection">${optionList(WIND_DIRECTION, oldCatch.windDirection || "", "Select Wind Direction")}</select>
 
         <label for="wind">Wind</label>
-        <select id="wind">${optionList(["Calm", "Light", "Moderate", "Strong"], oldCatch.wind || "", "Select Wind")}</select>
+        <select id="wind">${optionList(WIND, oldCatch.wind || "", "Select Wind")}</select>
 
         <label for="barometricTrend">Barometric Trend</label>
-        <select id="barometricTrend">${optionList(["Rising", "Stable", "Falling"], oldCatch.barometricTrend || "", "Select Barometric Trend")}</select>
+        <select id="barometricTrend">${optionList(BAROMETRIC, oldCatch.barometricTrend || "", "Select Barometric Trend")}</select>
 
         <label for="airTemp">Air Temp (°F)</label>
         <input id="airTemp" type="number" min="-20" max="130" placeholder="Ex: 78" value="${oldCatch.airTemp || ""}" />
 
         <label for="fishStage">Fish Stage</label>
-        <select id="fishStage">${optionList(["Pre-Spawn", "Spawn", "Post-Spawn", "Summer", "Fall", "Winter"], oldCatch.fishStage || "", "Select Fish Stage")}</select>
+        <select id="fishStage">${optionList(FISH_STAGE, oldCatch.fishStage || "", "Select Fish Stage")}</select>
 
         <label for="species">Bass Type</label>
-        <select id="species">${optionList(["Largemouth Bass", "Smallmouth Bass", "Spotted Bass"], oldCatch.species || "Largemouth Bass", "Select Bass Type")}</select>
+        <select id="species">${optionList(SPECIES, oldCatch.species || "Largemouth Bass", "Select Bass Type")}</select>
 
         <label for="weight">Weight</label>
-        <select id="weight">${optionList(["<1 lb", "1 lb", "2 lb", "3 lb", "4 lb", "5 lb", "6 lb", "7 lb", "8 lb", "9 lb", "10 lb", "11 lb", "12 lb", "13 lb", "14 lb", "15 lb+"], oldCatch.weight || "", "Select Weight")}</select>
+        <select id="weight">${optionList(WEIGHTS, oldCatch.weight || "", "Select Weight")}</select>
 
         <label for="length">Length</label>
-        <select id="length">${optionList([...Array.from({ length: 23 }, (_, i) => `${i + 8}"`), `31"+`], oldCatch.length || "", "Select Length")}</select>
+        <select id="length">${optionList(LENGTHS, oldCatch.length || "", "Select Length")}</select>
 
         <label for="lake">Lake / Pond</label>
-        <input id="lake" type="text" placeholder="Where did you catch it?" value="${escapeHtml(oldCatch.lake || "")}" />
-
-       <label for="baitColor">Bait Color</label>
-<select id="baitColor">${optionList([
-"Green Pumpkin",
-"Green Pumpkin Shad",
-"Black / Blue",
-"White",
-"White Shad",
-"Chartreuse White",
-"Bluegill",
-"Craw",
-"Brown",
-"Sexy Shad",
-"Threadfin Shad",
-"Gizzard Shad",
-"Fire Craw",
-"Other"
-], oldCatch.baitColor || "", "Select Bait Color")}</select>
+        <select id="lake">${optionList(LAKES, oldCatch.lake || "", "Select Lake / Pond")}</select>
 
         <label for="lure">Lure</label>
-        <select id="lure">${optionList(lureOptions, oldCatch.lure || "", "Select Lure")}</select>
+        <select id="lure">${optionList(LURES, oldCatch.lure || "", "Select Lure")}</select>
+
+        <label for="baitColor">Bait Color</label>
+        <select id="baitColor">${optionList(BAIT_COLORS, oldCatch.baitColor || "", "Select Bait Color")}</select>
 
         <label for="notes">Notes</label>
         <textarea id="notes" placeholder="Water color, cover, retrieve, etc.">${escapeHtml(oldCatch.notes || "")}</textarea>
@@ -160,9 +211,9 @@ function showCatchForm(editIndex = null) {
       species: document.getElementById("species").value,
       weight: document.getElementById("weight").value,
       length: document.getElementById("length").value,
-      lake: document.getElementById("lake").value.trim(),
-      baitColor: document.getElementById("baitColor").value,
+      lake: document.getElementById("lake").value,
       lure: document.getElementById("lure").value,
+      baitColor: document.getElementById("baitColor").value,
       notes: document.getElementById("notes").value.trim()
     };
 
@@ -193,7 +244,7 @@ function showCatches() {
               <p><strong>Time:</strong> ${escapeHtml(fish.catchTime || "Not entered")}</p>
               <p><strong>Weight:</strong> ${escapeHtml(fish.weight || "Not entered")}</p>
               <p><strong>Length:</strong> ${escapeHtml(fish.length || "Not entered")}</p>
-              <p><strong>Lake/Pond:</strong> ${escapeHtml(fish.lake || "Not entered")}</p>
+              <p><strong>Lake / Pond:</strong> ${escapeHtml(fish.lake || "Not entered")}</p>
               <p><strong>Lure:</strong> ${escapeHtml(fish.lure || "Not entered")}</p>
               <p><strong>Bait Color:</strong> ${escapeHtml(fish.baitColor || "Not entered")}</p>
               <p><strong>Water Temp:</strong> ${escapeHtml(fish.waterTemp || "Not entered")}</p>
@@ -204,13 +255,15 @@ function showCatches() {
               <p><strong>Barometric Trend:</strong> ${escapeHtml(fish.barometricTrend || "Not entered")}</p>
               <p><strong>Fish Stage:</strong> ${escapeHtml(fish.fishStage || "Not entered")}</p>
               <p><strong>Notes:</strong> ${escapeHtml(fish.notes || "None")}</p>
-              <button class="card back-button editBtn" data-index="${index}">Edit</button>
-              <button class="card back-button deleteBtn" data-index="${index}">Delete</button>
+
+              <button class="card back-button editBtn" data-index="${index}" type="button">Edit</button>
+              <button class="card back-button deleteBtn" data-index="${index}" type="button">Delete</button>
             </div>
           `).join("")
       }
-      <button class="card primary back-button" id="addCatch">Log Another Catch</button>
-      <button class="card back-button" id="backHome">Back Home</button>
+
+      <button class="card primary back-button" id="addCatch" type="button">Log Another Catch</button>
+      <button class="card back-button" id="backHome" type="button">Back Home</button>
     </section>
   `;
 
@@ -240,7 +293,7 @@ function showStats() {
       <h2>Stats</h2>
       <p><strong>Total Catches:</strong> ${catches.length}</p>
       <p><strong>Top Lure:</strong> ${getTopLure(catches)}</p>
-      <button class="card back-button" id="backHome">Back Home</button>
+      <button class="card back-button" id="backHome" type="button">Back Home</button>
     </section>
   `;
 
@@ -263,7 +316,7 @@ function showSettings() {
     <section class="form-card">
       <h2>Settings</h2>
       <p>Gear and preferences will go here next.</p>
-      <button class="card back-button" id="backHome">Back Home</button>
+      <button class="card back-button" id="backHome" type="button">Back Home</button>
     </section>
   `;
 
