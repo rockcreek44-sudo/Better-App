@@ -137,7 +137,8 @@ function showCatchForm(editIndex = null) {
       <h2>${editing ? "Edit Catch" : "New Catch"}</h2>
 
       <form id="catchForm">
-        <label for="catchDate">Date</label>
+      <h3 class="form-section-title">Trip Info</h3>  
+      <label for="catchDate">Date</label>
         <input id="catchDate" type="date" value="${oldCatch.catchDate || new Date().toISOString().slice(0, 10)}" />
 
         <label for="catchTime">Time</label>
