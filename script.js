@@ -37,6 +37,7 @@ async function detectLocationName(latitude, longitude) {
     const address = data.address || {};
 
     currentLocationName =
+    
       address.water ||
       address.reservoir ||
       address.river ||
@@ -47,29 +48,11 @@ async function detectLocationName(latitude, longitude) {
       address.village ||
       address.county ||
       "";
+     if (document.getElementById("waterName")) {
+    document.getElementById("waterName").value = currentLocationName;
+} 
 
-    const lakeField = document.getElementById("lake");
-
-      if (lakeField && currentLocationName) {
-    const locationName = currentLocationName.toLowerCase();
-    let detectedWaterType = "";
-
-    if (locationName.includes("reservoir")) {
-      detectedWaterType = "Reservoir";
-    } else if (locationName.includes("river")) {
-      detectedWaterType = "River";
-    } else if (locationName.includes("creek")) {
-      detectedWaterType = "Creek";
-    } else if (locationName.includes("pond")) {
-      detectedWaterType = "Pond";
-    } else if (locationName.includes("lake")) {
-      detectedWaterType = "Lake";
-    }
-
-    if (detectedWaterType) {
-      lakeField.value = detectedWaterType;
-    }
-  }
+    
   
   } catch (error) {
     console.error("Location detection failed:", error);
@@ -262,7 +245,8 @@ function showCatchForm(editIndex = null) {
 
         <label for="lake">Lake / Pond</label>
         <select id="lake">${optionList(LAKES, oldCatch.lake || localStorage.getItem("defaultWaterType") || "", "Select Lake / Pond")}</select>
-
+        <label for="waterName">Water Name</label>
+<input id="waterName" type="text" value="${escapeHtml(oldCatch.waterName || "")}" readonly>
         <label for="lure">Lure</label>
         <select id="lure">${optionList(LURES, oldCatch.lure || localStorage.getItem("defaultLure") || "", "Select Lure")}</select>
 
@@ -300,6 +284,7 @@ function showCatchForm(editIndex = null) {
       lake: document.getElementById("lake").value,
       lure: document.getElementById("lure").value,
       baitColor: document.getElementById("baitColor").value,
+      waterName: document.getElementById("waterName").value,
       notes: document.getElementById("notes").value.trim()
     };
 
@@ -334,6 +319,7 @@ function showCatches() {
               <p><strong>Length:</strong> ${escapeHtml(fish.length || "Not entered")}</p>
               <p><strong>Lake / Pond:</strong> ${escapeHtml(fish.lake || "Not entered")}</p>
               <p><strong>Lure:</strong> ${escapeHtml(fish.lure || "Not entered")}</p>
+              <p><strong>Water Name:</strong> ${escapeHtml(fish.waterName || "Not entered")}</p>
               <p><strong>Bait Color:</strong> ${escapeHtml(fish.baitColor || "Not entered")}</p>
               <p><strong>Water Temp:</strong> ${escapeHtml(fish.waterTemp || "Not entered")}</p>
               <p><strong>Air Temp:</strong> ${escapeHtml(fish.airTemp || "Not entered")}</p>
