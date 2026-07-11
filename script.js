@@ -221,6 +221,8 @@ function showCatchForm(editIndex = null) {
     const savedCatch = {
       catchDate: document.getElementById("catchDate").value,
       catchTime: document.getElementById("catchTime").value,
+      latitude: document.getElementById("latitude").value,
+      longitude: document.getElementById("longitude").value,
       waterTemp: document.getElementById("waterTemp").value,
       weather: document.getElementById("weather").value,
       waterClarity: document.getElementById("waterClarity").value,
@@ -263,6 +265,8 @@ function showCatches() {
               <h3>${escapeHtml(fish.species || "Bass")}</h3>
               <p><strong>Date:</strong> ${escapeHtml(fish.catchDate || "Not entered")}</p>
               <p><strong>Time:</strong> ${escapeHtml(fish.catchTime || "Not entered")}</p>
+              <p><strong>Latitude:</strong> ${escapeHtml(fish.latitude || "Not entered")}</p>
+              <p><strong>Longitude:</strong> ${escapeHtml(fish.longitude || "Not entered")}</p>
               <p><strong>Weight:</strong> ${escapeHtml(fish.weight || "Not entered")}</p>
               <p><strong>Length:</strong> ${escapeHtml(fish.length || "Not entered")}</p>
               <p><strong>Lake / Pond:</strong> ${escapeHtml(fish.lake || "Not entered")}</p>
