@@ -169,7 +169,7 @@ function showCatchForm(editIndex = null) {
         <select id="fishStage">${optionList(FISH_STAGE, oldCatch.fishStage || "", "Select Fish Stage")}</select>
 
         <label for="species">Bass Type</label>
-        <select id="species">${optionList(SPECIES, oldCatch.species || "Largemouth Bass", "Select Bass Type")}</select>
+        <select id="species">${optionList(SPECIES, oldCatch.species || localStorage.getItem("defaultSpecies") || "Largemouth Bass", "Select Bass Type")}</select>
 
         <label for="weight">Weight</label>
         <select id="weight">${optionList(WEIGHTS, oldCatch.weight || "", "Select Weight")}</select>
@@ -178,10 +178,10 @@ function showCatchForm(editIndex = null) {
         <select id="length">${optionList(LENGTHS, oldCatch.length || "", "Select Length")}</select>
 
         <label for="lake">Lake / Pond</label>
-        <select id="lake">${optionList(LAKES, oldCatch.lake || "", "Select Lake / Pond")}</select>
+        <select id="lake">${optionList(LAKES, oldCatch.lake || localStorage.getItem("defaultWaterType") || "", "Select Lake / Pond")}</select>
 
         <label for="lure">Lure</label>
-        <select id="lure">${optionList(LURES, oldCatch.lure || "", "Select Lure")}</select>
+        <select id="lure">${optionList(LURES, oldCatch.lure || localStorage.getItem("defaultLure") || "", "Select Lure")}</select>
 
         <label for="baitColor">Bait Color</label>
         <select id="baitColor">${optionList(BAIT_COLORS, oldCatch.baitColor || "", "Select Bait Color")}</select>
