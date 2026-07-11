@@ -1,7 +1,7 @@
 const app = document.getElementById("app");
 let currentLatitude = "";
 let currentLongitude = "";
-
+let currentLocationName = "";
 function refreshGPS() {
   if (!navigator.geolocation) return;
 
@@ -9,6 +9,8 @@ function refreshGPS() {
     (position) => {
       currentLatitude = position.coords.latitude.toFixed(6);
       currentLongitude = position.coords.longitude.toFixed(6);
+      
+      detectLocationName(currentLatitude, currentLongitude);
 
       const latitudeField = document.getElementById("latitude");
       const longitudeField = document.getElementById("longitude");
@@ -23,6 +25,44 @@ function refreshGPS() {
   );
 }
 
+async function detectLocationName(latitude, longitude) {
+  try {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}&zoom=14&addressdetails=1`
+    );
+
+    if (!response.ok) return;
+
+    const data = await response.json();
+    const address = data.address || {};
+
+    currentLocationName =
+      address.water ||
+      address.reservoir ||
+      address.river ||
+      address.lake ||
+      address.pond ||
+      address.city ||
+      address.town ||
+      address.village ||
+      address.county ||
+      "";
+
+    const lakeField = document.getElementById("lake");
+
+    if (lakeField && currentLocationName) {
+      const matchingOption = [...lakeField.options].find(
+        option => option.value.toLowerCase() === currentLocationName.toLowerCase()
+      );
+
+      if (matchingOption) {
+        lakeField.value = matchingOption.value;
+      }
+    }
+  } catch (error) {
+    console.error("Location detection failed:", error);
+  }
+}
 refreshGPS();
 const STORAGE_KEY = "betterAppCatches";
 
