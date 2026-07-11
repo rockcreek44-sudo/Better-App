@@ -1,4 +1,19 @@
 const app = document.getElementById("app");
+let currentLatitude = "";
+let currentLongitude = "";
+
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      currentLatitude = position.coords.latitude.toFixed(6);
+      currentLongitude = position.coords.longitude.toFixed(6);
+    },
+    () => {
+      currentLatitude = "";
+      currentLongitude = "";
+    }
+  );
+}
 const STORAGE_KEY = "betterAppCatches";
 
 const LURES = ["Workhorse", "Mini", "Mesh", "Darkhorse", "Karashi", "Swim Jig", "Other"];
@@ -143,6 +158,11 @@ function showCatchForm(editIndex = null) {
 
         <label for="catchTime">Time</label>
         <input id="catchTime" type="time" value="${oldCatch.catchTime || new Date().toTimeString().slice(0, 5)}" />
+        <label for="latitude">Latitude</label>
+<input id="latitude" type="text" readonly value="${currentLatitude}" />
+
+<label for="longitude">Longitude</label>
+<input id="longitude" type="text" readonly value="${currentLongitude}" />
 
         <label for="waterTemp">Water Temp (°F)</label>
         <input id="waterTemp" type="number" min="32" max="120" placeholder="Ex: 72" value="${oldCatch.waterTemp || ""}" />
