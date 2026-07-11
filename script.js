@@ -314,12 +314,79 @@ function getTopLure(catches) {
 function showSettings() {
   app.innerHTML = `
     ${header("SETTINGS")}
+
     <section class="form-card">
       <h2>Settings</h2>
-      <p>Gear and preferences will go here next.</p>
-      <button class="card back-button" id="backHome" type="button">Back Home</button>
+
+      <label for="defaultLake">Home Lake / Pond</label>
+      <input
+        id="defaultLake"
+        type="text"
+        placeholder="Ex: Morse Reservoir"
+        value="${localStorage.getItem("defaultLake") || ""}"
+      />
+
+      <label for="defaultSpecies">Default Bass Species</label>
+      <select id="defaultSpecies">
+        ${optionList(
+          SPECIES,
+          localStorage.getItem("defaultSpecies") || "Largemouth Bass",
+          "Select Bass Species"
+        )}
+      </select>
+
+      <label for="defaultLure">Default Lure</label>
+      <select id="defaultLure">
+        ${optionList(
+          LURES,
+          localStorage.getItem("defaultLure") || "",
+          "Select Lure"
+        )}
+      </select>
+
+      <label for="defaultWaterType">Default Water Type</label>
+      <select id="defaultWaterType">
+        ${optionList(
+          LAKES,
+          localStorage.getItem("defaultWaterType") || "",
+          "Select Water Type"
+        )}
+      </select>
+
+      <button class="card primary back-button" id="saveSettings" type="button">
+        Save Settings
+      </button>
+
+      <button class="card back-button" id="backHome" type="button">
+        Back Home
+      </button>
     </section>
   `;
+
+  document.getElementById("saveSettings").onclick = () => {
+    localStorage.setItem(
+      "defaultLake",
+      document.getElementById("defaultLake").value.trim()
+    );
+
+    localStorage.setItem(
+      "defaultSpecies",
+      document.getElementById("defaultSpecies").value
+    );
+
+    localStorage.setItem(
+      "defaultLure",
+      document.getElementById("defaultLure").value
+    );
+
+    localStorage.setItem(
+      "defaultWaterType",
+      document.getElementById("defaultWaterType").value
+    );
+
+    alert("Settings saved!");
+    showHome();
+  };
 
   document.getElementById("backHome").onclick = showHome;
 }
