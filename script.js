@@ -50,15 +50,27 @@ async function detectLocationName(latitude, longitude) {
 
     const lakeField = document.getElementById("lake");
 
-    if (lakeField && currentLocationName) {
-      const matchingOption = [...lakeField.options].find(
-        option => option.value.toLowerCase() === currentLocationName.toLowerCase()
-      );
+      if (lakeField && currentLocationName) {
+    const locationName = currentLocationName.toLowerCase();
+    let detectedWaterType = "";
 
-      if (matchingOption) {
-        lakeField.value = matchingOption.value;
-      }
+    if (locationName.includes("reservoir")) {
+      detectedWaterType = "Reservoir";
+    } else if (locationName.includes("river")) {
+      detectedWaterType = "River";
+    } else if (locationName.includes("creek")) {
+      detectedWaterType = "Creek";
+    } else if (locationName.includes("pond")) {
+      detectedWaterType = "Pond";
+    } else if (locationName.includes("lake")) {
+      detectedWaterType = "Lake";
     }
+
+    if (detectedWaterType) {
+      lakeField.value = detectedWaterType;
+    }
+  }
+  
   } catch (error) {
     console.error("Location detection failed:", error);
   }
