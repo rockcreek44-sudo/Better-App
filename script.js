@@ -2,11 +2,19 @@ const app = document.getElementById("app");
 let currentLatitude = "";
 let currentLongitude = "";
 
-if (navigator.geolocation) {
+function refreshGPS() {
+  if (!navigator.geolocation) return;
+
   navigator.geolocation.getCurrentPosition(
     (position) => {
       currentLatitude = position.coords.latitude.toFixed(6);
       currentLongitude = position.coords.longitude.toFixed(6);
+
+      const latitudeField = document.getElementById("latitude");
+      const longitudeField = document.getElementById("longitude");
+
+      if (latitudeField) latitudeField.value = currentLatitude;
+      if (longitudeField) longitudeField.value = currentLongitude;
     },
     () => {
       currentLatitude = "";
@@ -14,6 +22,8 @@ if (navigator.geolocation) {
     }
   );
 }
+
+refreshGPS();
 const STORAGE_KEY = "betterAppCatches";
 
 const LURES = ["Workhorse", "Mini", "Mesh", "Darkhorse", "Karashi", "Swim Jig", "Other"];
@@ -141,6 +151,7 @@ function showHome() {
 }
 
 function showCatchForm(editIndex = null) {
+    refreshGPS();
   const catches = getCatches();
   const editing = editIndex !== null;
   const oldCatch = editing ? catches[editIndex] : {};
