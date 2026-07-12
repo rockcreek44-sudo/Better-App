@@ -401,8 +401,12 @@ document.querySelectorAll(".photo-viewer").forEach(photo => {
     img.style.objectFit = "contain";
 
     overlay.appendChild(img);
-    overlay.onclick = () => overlay.remove();
+    overlay.onclick = () => {
+  document.body.style.overflow = "";
+  overlay.remove();
+};
 
+    document.body.style.overflow = "hidden";
     document.body.appendChild(overlay);
   };
 });
