@@ -326,35 +326,66 @@ function showCatches() {
         catches.length === 0
           ? `<p>No catches logged yet.</p>`
           : catches.map((fish, index) => `
-            <div class="catch-card">
-              <h3>${escapeHtml(fish.species || "Bass")}</h3>
-              ${fish.photo ? '<img src="' + fish.photo + '" alt="Catch photo" class="catch-photo photo-viewer" data-photo="' + fish.photo + '" style="width:100%;height:250px;object-fit:cover;display:block;cursor:pointer;">' : ''}
-   <div class="catch-section">
-  <h4>Trip</h4>
-  ${fish.catchDate ? `<p><strong>📅 Date:</strong> ${escapeHtml(fish.catchDate)}</p>` : ""}
-  ${fish.catchTime ? `<p><strong>🕒 Time:</strong> ${escapeHtml(fish.catchTime)}</p>` : ""}
-</div>
+  <div class="catch-card">
+    <h3>${escapeHtml(fish.species || "Bass")}</h3>
 
-<div class="catch-section">
-  <h4>Location</h4>
-  ${fish.waterName ? `<p><strong>🌊 Water Name:</strong> ${escapeHtml(fish.waterName)}</p>` : ""}
-  ${fish.lake ? `<p><strong>🏞️ Water Type:</strong> ${escapeHtml(fish.lake)}</p>` : ""}
-  ${fish.latitude ? `<p><strong>📍 Latitude:</strong> ${escapeHtml(fish.latitude)}</p>` : ""}
-  ${fish.longitude ? `<p><strong>📍 Longitude:</strong> ${escapeHtml(fish.longitude)}</p>` : ""}
-</div>
+    ${fish.photo ? `
+      <img
+        src="${fish.photo}"
+        alt="Catch photo"
+        class="catch-photo photo-viewer"
+        data-photo="${fish.photo}"
+        style="width:100%;height:250px;object-fit:cover;display:block;cursor:pointer;"
+      >
+    ` : ""}
 
-<div class="catch-section">
-  <h4>Catch</h4>
-  ${fish.weight ? `<p><strong>⚖️ Weight:</strong> ${escapeHtml(fish.weight)}</p>` : ""}
-  ${fish.length ? `<p><strong>📏 Length:</strong> ${escapeHtml(fish.length)}</p>` : ""}
-  ${fish.lure ? `<p><strong>🎣 Lure:</strong> ${escapeHtml(fish.lure)}</p>` : ""}
-  ${fish.baitColor ? `<p><strong>🎨 Bait Color:</strong> ${escapeHtml(fish.baitColor)}</p>` : ""}
-</div>
+    <div class="catch-section">
+      <h4>Trip</h4>
+      ${fish.catchDate ? `<p><strong>📅 Date:</strong> ${escapeHtml(fish.catchDate)}</p>` : ""}
+      ${fish.catchTime ? `<p><strong>🕒 Time:</strong> ${escapeHtml(fish.catchTime)}</p>` : ""}
+    </div>
 
-<div class="catch-section">
-  <h4>Conditions</h4>
-  ${fish.waterTemp ? `<p><strong>🌡️ Water Temp:</strong> ${escapeHtml(fish.waterTemp)}</p>` : ""}
-  ${fish.airTemp ? `<p><strong>🌡️ Air Temp:</strong> ${escapeHtml(fish.airTemp)}</p>` : ""}
+    <div class="catch-section">
+      <h4>Location</h4>
+      ${fish.waterName ? `<p><strong>🌊 Water Name:</strong> ${escapeHtml(fish.waterName)}</p>` : ""}
+      ${fish.lake ? `<p><strong>🏞️ Water Type:</strong> ${escapeHtml(fish.lake)}</p>` : ""}
+      ${fish.latitude ? `<p><strong>📍 Latitude:</strong> ${escapeHtml(fish.latitude)}</p>` : ""}
+      ${fish.longitude ? `<p><strong>📍 Longitude:</strong> ${escapeHtml(fish.longitude)}</p>` : ""}
+    </div>
+
+    <div class="catch-section">
+      <h4>Catch</h4>
+      ${fish.weight ? `<p><strong>⚖️ Weight:</strong> ${escapeHtml(fish.weight)}</p>` : ""}
+      ${fish.length ? `<p><strong>📏 Length:</strong> ${escapeHtml(fish.length)}</p>` : ""}
+      ${fish.lure ? `<p><strong>🎣 Lure:</strong> ${escapeHtml(fish.lure)}</p>` : ""}
+      ${fish.baitColor ? `<p><strong>🎨 Bait Color:</strong> ${escapeHtml(fish.baitColor)}</p>` : ""}
+    </div>
+
+    <div class="catch-section">
+      <h4>Conditions</h4>
+      ${fish.waterTemp ? `<p><strong>🌡️ Water Temp:</strong> ${escapeHtml(fish.waterTemp)}</p>` : ""}
+      ${fish.airTemp ? `<p><strong>🌡️ Air Temp:</strong> ${escapeHtml(fish.airTemp)}</p>` : ""}
+      ${fish.weather ? `<p><strong>🌤️ Weather:</strong> ${escapeHtml(fish.weather)}</p>` : ""}
+      ${fish.waterClarity ? `<p><strong>💧 Water Clarity:</strong> ${escapeHtml(fish.waterClarity)}</p>` : ""}
+      ${fish.wind || fish.windDirection ? `<p><strong>💨 Wind:</strong> ${escapeHtml(fish.wind || "")} ${escapeHtml(fish.windDirection || "")}</p>` : ""}
+      ${fish.barometricTrend ? `<p><strong>📈 Barometric Trend:</strong> ${escapeHtml(fish.barometricTrend)}</p>` : ""}
+      ${fish.fishStage ? `<p><strong>🐟 Fish Stage:</strong> ${escapeHtml(fish.fishStage)}</p>` : ""}
+    </div>
+
+    ${fish.notes ? `
+      <div class="catch-section">
+        <h4>Notes</h4>
+        <p>${escapeHtml(fish.notes)}</p>
+      </div>
+    ` : ""}
+
+    ${fish.photo ? `<div class="photo-hint">Tap photo to enlarge</div>` : ""}
+
+    <button class="card back-button editBtn" data-index="${index}" type="button">Edit</button>
+    <button class="card back-button mapBtn" data-lat="${fish.latitude}" data-lon="${fish.longitude}" type="button">Map</button>
+    <button class="card back-button deleteBtn" data-index="${index}" type="button">Delete</button>
+  </div>
+`).join("")
   ${fish.weather ? `<p><strong>🌤️ Weather:</strong> ${escapeHtml(fish.weather)}</p>` : ""}
   ${fish.waterClarity ? `<p><strong>💧 Water Clarity:</strong> ${escapeHtml(fish.waterClarity)}</p>` : ""}
   ${fish.wind || fish.windDirection ? `<p><strong>💨 Wind:</strong> ${escapeHtml(fish.wind || "")} ${escapeHtml(fish.windDirection || "")}</p>` : ""}
