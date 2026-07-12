@@ -329,24 +329,25 @@ function showCatches() {
             <div class="catch-card">
               <h3>${escapeHtml(fish.species || "Bass")}</h3>
               ${fish.photo ? '<img src="' + fish.photo + '" alt="Catch photo" class="catch-photo photo-viewer" data-photo="' + fish.photo + '" style="width:100%;height:250px;object-fit:cover;display:block;cursor:pointer;">' : ''}
-              <p><strong>Date:</strong> ${escapeHtml(fish.catchDate || "Not entered")}</p>
-              <p><strong>Time:</strong> ${escapeHtml(fish.catchTime || "Not entered")}</p>
-              <p><strong>Latitude:</strong> ${escapeHtml(fish.latitude || "Not entered")}</p>
-              <p><strong>Longitude:</strong> ${escapeHtml(fish.longitude || "Not entered")}</p>
-              <p><strong>Weight:</strong> ${escapeHtml(fish.weight || "Not entered")}</p>
-              <p><strong>Length:</strong> ${escapeHtml(fish.length || "Not entered")}</p>
-              <p><strong>Water Type:</strong> ${escapeHtml(fish.lake || "Not entered")}</p>
-              <p><strong>Lure:</strong> ${escapeHtml(fish.lure || "Not entered")}</p>
-              <p><strong>Water Name:</strong> ${escapeHtml(fish.waterName || "Not entered")}</p>
-              <p><strong>Bait Color:</strong> ${escapeHtml(fish.baitColor || "Not entered")}</p>
-              <p><strong>Water Temp:</strong> ${escapeHtml(fish.waterTemp || "Not entered")}</p>
-              <p><strong>Air Temp:</strong> ${escapeHtml(fish.airTemp || "Not entered")}</p>
-              <p><strong>Weather:</strong> ${escapeHtml(fish.weather || "Not entered")}</p>
-              <p><strong>Water Clarity:</strong> ${escapeHtml(fish.waterClarity || "Not entered")}</p>
-              <p><strong>Wind:</strong> ${escapeHtml(fish.wind || "Not entered")} ${escapeHtml(fish.windDirection || "")}</p>
-              <p><strong>Barometric Trend:</strong> ${escapeHtml(fish.barometricTrend || "Not entered")}</p>
-              <p><strong>Fish Stage:</strong> ${escapeHtml(fish.fishStage || "Not entered")}</p>
-              <p><strong>Notes:</strong> ${escapeHtml(fish.notes || "None")}</p>
+              ${fish.catchDate ? `<p><strong>Date:</strong> ${escapeHtml(fish.catchDate)}</p>` : ""}
+${fish.catchTime ? `<p><strong>Time:</strong> ${escapeHtml(fish.catchTime)}</p>` : ""}
+${fish.latitude ? `<p><strong>Latitude:</strong> ${escapeHtml(fish.latitude)}</p>` : ""}
+${fish.longitude ? `<p><strong>Longitude:</strong> ${escapeHtml(fish.longitude)}</p>` : ""}
+${fish.weight ? `<p><strong>Weight:</strong> ${escapeHtml(fish.weight)}</p>` : ""}
+${fish.length ? `<p><strong>Length:</strong> ${escapeHtml(fish.length)}</p>` : ""}
+${fish.lake ? `<p><strong>Water Type:</strong> ${escapeHtml(fish.lake)}</p>` : ""}
+${fish.lure ? `<p><strong>Lure:</strong> ${escapeHtml(fish.lure)}</p>` : ""}
+${fish.waterName ? `<p><strong>Water Name:</strong> ${escapeHtml(fish.waterName)}</p>` : ""}
+${fish.baitColor ? `<p><strong>Bait Color:</strong> ${escapeHtml(fish.baitColor)}</p>` : ""}
+${fish.waterTemp ? `<p><strong>Water Temp:</strong> ${escapeHtml(fish.waterTemp)}</p>` : ""}
+${fish.airTemp ? `<p><strong>Air Temp:</strong> ${escapeHtml(fish.airTemp)}</p>` : ""}
+${fish.weather ? `<p><strong>Weather:</strong> ${escapeHtml(fish.weather)}</p>` : ""}
+${fish.waterClarity ? `<p><strong>Water Clarity:</strong> ${escapeHtml(fish.waterClarity)}</p>` : ""}
+${fish.wind || fish.windDirection ? `<p><strong>Wind:</strong> ${escapeHtml(fish.wind || "")} ${escapeHtml(fish.windDirection || "")}</p>` : ""}
+${fish.barometricTrend ? `<p><strong>Barometric Trend:</strong> ${escapeHtml(fish.barometricTrend)}</p>` : ""}
+${fish.fishStage ? `<p><strong>Fish Stage:</strong> ${escapeHtml(fish.fishStage)}</p>` : ""}
+${fish.notes ? `<p><strong>Notes:</strong> ${escapeHtml(fish.notes)}</p>` : ""}
+              
               <div class="photo-hint">Tap photo to enlarge</div>
 
               <button class="card back-button editBtn" data-index="${index}" type="button">Edit</button>
