@@ -328,7 +328,7 @@ function showCatches() {
           : catches.map((fish, index) => `
             <div class="catch-card">
               <h3>${escapeHtml(fish.species || "Bass")}</h3>
-              ${fish.photo ? '<img src="' + fish.photo + '" alt="Catch photo" class="catch-photo">' : ''}
+              ${fish.photo ? '<img src="' + fish.photo + '" alt="Catch photo" class="catch-photo" style="width:100%;height:250px;object-fit:cover;display:block;">' : ''}
               <p><strong>Date:</strong> ${escapeHtml(fish.catchDate || "Not entered")}</p>
               <p><strong>Time:</strong> ${escapeHtml(fish.catchTime || "Not entered")}</p>
               <p><strong>Latitude:</strong> ${escapeHtml(fish.latitude || "Not entered")}</p>
