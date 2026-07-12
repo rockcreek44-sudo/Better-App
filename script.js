@@ -243,9 +243,9 @@ function showCatchForm(editIndex = null) {
 
         <label for="length">Length</label>
         <select id="length">${optionList(LENGTHS, oldCatch.length || "", "Select Length")}</select>
-
-        <label for="lake">Lake / Pond</label>
-        <select id="lake">${optionList(LAKES, oldCatch.lake || localStorage.getItem("defaultWaterType") || "", "Select Lake / Pond")}</select>
+        
+        <label for="lake">Water Type</label>
+        <select id="lake">${optionList(LAKES, oldCatch.lake || localStorage.getItem("defaultWaterType") || "", "Select Water Type")}</select>
         <label for="waterName">Water Name</label>
 <input id="waterName" type="text" value="${escapeHtml(oldCatch.waterName || "")}" readonly>
         <label for="lure">Lure</label>
@@ -318,7 +318,7 @@ function showCatches() {
               <p><strong>Longitude:</strong> ${escapeHtml(fish.longitude || "Not entered")}</p>
               <p><strong>Weight:</strong> ${escapeHtml(fish.weight || "Not entered")}</p>
               <p><strong>Length:</strong> ${escapeHtml(fish.length || "Not entered")}</p>
-              <p><strong>Lake / Pond:</strong> ${escapeHtml(fish.lake || "Not entered")}</p>
+              <p><strong>Water Type:</strong> ${escapeHtml(fish.lake || "Not entered")}</p>
               <p><strong>Lure:</strong> ${escapeHtml(fish.lure || "Not entered")}</p>
               <p><strong>Water Name:</strong> ${escapeHtml(fish.waterName || "Not entered")}</p>
               <p><strong>Bait Color:</strong> ${escapeHtml(fish.baitColor || "Not entered")}</p>
