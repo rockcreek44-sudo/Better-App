@@ -385,24 +385,10 @@ function showCatches() {
     <button class="card back-button mapBtn" data-lat="${fish.latitude}" data-lon="${fish.longitude}" type="button">Map</button>
     <button class="card back-button deleteBtn" data-index="${index}" type="button">Delete</button>
   </div>
-`).join("")
-  ${fish.weather ? `<p><strong>🌤️ Weather:</strong> ${escapeHtml(fish.weather)}</p>` : ""}
-  ${fish.waterClarity ? `<p><strong>💧 Water Clarity:</strong> ${escapeHtml(fish.waterClarity)}</p>` : ""}
-  ${fish.wind || fish.windDirection ? `<p><strong>💨 Wind:</strong> ${escapeHtml(fish.wind || "")} ${escapeHtml(fish.windDirection || "")}</p>` : ""}
-  ${fish.barometricTrend ? `<p><strong>📈 Barometric Trend:</strong> ${escapeHtml(fish.barometricTrend)}</p>` : ""}
-  ${fish.fishStage ? `<p><strong>🐟 Fish Stage:</strong> ${escapeHtml(fish.fishStage)}</p>` : ""}
-</div>
+`).join("")}
+  
 
-${fish.notes ? `<div class="catch-section"><h4>Notes</h4><p>${escapeHtml(fish.notes)}</p></div>` : ""}
-              
-              <div class="photo-hint">Tap photo to enlarge</div>
 
-              <button class="card back-button editBtn" data-index="${index}" type="button">Edit</button>
-              <button class="card back-button mapBtn" data-lat="${fish.latitude}" data-lon="${fish.longitude}" type="button">Map</button>
-              <button class="card back-button deleteBtn" data-index="${index}" type="button">Delete</button>
-            </div>
-          `).join("")
-      }
 
       <button class="card primary back-button" id="addCatch" type="button">Log Another Catch</button>
       <button class="card back-button" id="backHome" type="button">Back Home</button>
