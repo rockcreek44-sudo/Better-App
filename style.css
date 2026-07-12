@@ -161,3 +161,25 @@ input::placeholder, textarea::placeholder { color: #777; opacity: 1; }
   font-size: 13px;
   color: var(--muted);
 }
+.catch-section {
+  margin: 14px 0;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.catch-section:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.catch-section h4 {
+  margin: 0 0 8px;
+  color: var(--red);
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.catch-section p {
+  margin: 5px 0;
+}
