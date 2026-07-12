@@ -43,11 +43,11 @@ async function detectLocationName(latitude, longitude) {
       address.river ||
       address.lake ||
       address.pond ||
-      data.namedetails?.name ||
-      address.city ||
-      address.town ||
-      address.village ||
-      address.county ||
+      
+      
+      
+      
+      
       "";
      if (document.getElementById("waterName")) {
     document.getElementById("waterName").value = currentLocationName;
