@@ -332,6 +332,7 @@ function showCatches() {
               <p><strong>Notes:</strong> ${escapeHtml(fish.notes || "None")}</p>
 
               <button class="card back-button editBtn" data-index="${index}" type="button">Edit</button>
+              <button class="card back-button mapBtn" data-lat="${fish.latitude}" data-lon="${fish.longitude}" type="button">Map</button>
               <button class="card back-button deleteBtn" data-index="${index}" type="button">Delete</button>
             </div>
           `).join("")
@@ -348,7 +349,15 @@ function showCatches() {
   document.querySelectorAll(".editBtn").forEach(button => {
     button.onclick = () => showCatchForm(Number(button.dataset.index));
   });
-
+document.querySelectorAll(".mapBtn").forEach(button => {
+  button.onclick = () => {
+    const lat = button.dataset.lat;
+    const lon = button.dataset.lon;
+    if (lat && lon) {
+      window.open(`https://www.google.com/maps?q=${lat},${lon}`, "_blank");
+    }
+  };
+});
   document.querySelectorAll(".deleteBtn").forEach(button => {
     button.onclick = () => {
       const updated = getCatches();
