@@ -328,7 +328,7 @@ function showCatches() {
           : catches.map((fish, index) => `
             <div class="catch-card">
               <h3>${escapeHtml(fish.species || "Bass")}</h3>
-              ${fish.photo ? '<img src="' + fish.photo + '" alt="Catch photo" class="catch-photo" style="width:100%;height:250px;object-fit:cover;display:block;">' : ''}
+              ${fish.photo ? '<img src="' + fish.photo + '" alt="Catch photo" class="catch-photo photo-viewer" data-photo="' + fish.photo + '" style="width:100%;height:250px;object-fit:cover;display:block;cursor:pointer;">' : ''}
               <p><strong>Date:</strong> ${escapeHtml(fish.catchDate || "Not entered")}</p>
               <p><strong>Time:</strong> ${escapeHtml(fish.catchTime || "Not entered")}</p>
               <p><strong>Latitude:</strong> ${escapeHtml(fish.latitude || "Not entered")}</p>
@@ -347,6 +347,7 @@ function showCatches() {
               <p><strong>Barometric Trend:</strong> ${escapeHtml(fish.barometricTrend || "Not entered")}</p>
               <p><strong>Fish Stage:</strong> ${escapeHtml(fish.fishStage || "Not entered")}</p>
               <p><strong>Notes:</strong> ${escapeHtml(fish.notes || "None")}</p>
+              <div class="photo-hint">Tap photo to enlarge</div>
 
               <button class="card back-button editBtn" data-index="${index}" type="button">Edit</button>
               <button class="card back-button mapBtn" data-lat="${fish.latitude}" data-lon="${fish.longitude}" type="button">Map</button>
@@ -373,6 +374,36 @@ document.querySelectorAll(".mapBtn").forEach(button => {
     if (lat && lon) {
       window.open(`https://www.google.com/maps?q=${lat},${lon}`, "_blank");
     }
+  };
+});
+
+document.querySelectorAll(".photo-viewer").forEach(photo => {
+  photo.onclick = () => {
+    const src = photo.dataset.photo;
+    if (!src) return;
+
+    const overlay = document.createElement("div");
+    overlay.style.position = "fixed";
+    overlay.style.top = "0";
+    overlay.style.left = "0";
+    overlay.style.width = "100vw";
+    overlay.style.height = "100vh";
+    overlay.style.background = "rgba(0,0,0,0.9)";
+    overlay.style.display = "flex";
+    overlay.style.alignItems = "center";
+    overlay.style.justifyContent = "center";
+    overlay.style.zIndex = "9999";
+
+    const img = document.createElement("img");
+    img.src = src;
+    img.style.maxWidth = "95%";
+    img.style.maxHeight = "95%";
+    img.style.objectFit = "contain";
+
+    overlay.appendChild(img);
+    overlay.onclick = () => overlay.remove();
+
+    document.body.appendChild(overlay);
   };
 });
   document.querySelectorAll(".deleteBtn").forEach(button => {
