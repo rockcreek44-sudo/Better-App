@@ -145,4 +145,11 @@ input::placeholder, textarea::placeholder { color: #777; opacity: 1; }
   .grid { grid-template-columns: 1fr; }
   .card { min-height: 145px; }
   .form-card { padding: 16px; }
-  .tagline { font-size: 17px; }
+  .tagline { font-size: 17px; }.catch-photo {
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin: 12px 0;
+  display: block;
+}
