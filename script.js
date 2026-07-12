@@ -28,7 +28,7 @@ function refreshGPS() {
 async function detectLocationName(latitude, longitude) {
   try {
     const response = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}&zoom=14&addressdetails=1`
+      `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1&namedetails=1`
     );
 
     if (!response.ok) return;
@@ -43,6 +43,7 @@ async function detectLocationName(latitude, longitude) {
       address.river ||
       address.lake ||
       address.pond ||
+      data.namedetails?.name ||
       address.city ||
       address.town ||
       address.village ||
