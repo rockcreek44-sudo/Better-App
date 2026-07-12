@@ -254,6 +254,8 @@ function showCatchForm(editIndex = null) {
         <label for="baitColor">Bait Color</label>
         <select id="baitColor">${optionList(BAIT_COLORS, oldCatch.baitColor || "", "Select Bait Color")}</select>
 
+        <label for="photo">Photo</label>
+<input id="photo" type="file" accept="image/*">
         <label for="notes">Notes</label>
         <textarea id="notes" placeholder="Water color, cover, retrieve, etc.">${escapeHtml(oldCatch.notes || "")}</textarea>
 
@@ -263,31 +265,45 @@ function showCatchForm(editIndex = null) {
     </section>
   `;
 
-  document.getElementById("catchForm").addEventListener("submit", event => {
+  document.getElementById("catchForm").addEventListener("submit", async event => {
     event.preventDefault();
+  const photoInput = document.getElementById("photo");
+  let photoData = oldCatch?.photo || "";
 
-    const savedCatch = {
-      catchDate: document.getElementById("catchDate").value,
-      catchTime: document.getElementById("catchTime").value,
-      latitude: document.getElementById("latitude").value,
-      longitude: document.getElementById("longitude").value,
-      waterTemp: document.getElementById("waterTemp").value,
-      weather: document.getElementById("weather").value,
-      waterClarity: document.getElementById("waterClarity").value,
-      windDirection: document.getElementById("windDirection").value,
-      wind: document.getElementById("wind").value,
-      barometricTrend: document.getElementById("barometricTrend").value,
-      airTemp: document.getElementById("airTemp").value,
-      fishStage: document.getElementById("fishStage").value,
-      species: document.getElementById("species").value,
-      weight: document.getElementById("weight").value,
-      length: document.getElementById("length").value,
-      lake: document.getElementById("lake").value,
-      lure: document.getElementById("lure").value,
-      baitColor: document.getElementById("baitColor").value,
-      waterName: document.getElementById("waterName").value,
-      notes: document.getElementById("notes").value.trim()
-    };
+  if (photoInput.files && photoInput.files[0]) {
+    photoData = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(reader.error);
+
+      reader.readAsDataURL(photoInput.files[0]);
+    });
+  }
+
+  const savedCatch = {
+    catchDate: document.getElementById("catchDate").value,
+    catchTime: document.getElementById("catchTime").value,
+    latitude: document.getElementById("latitude").value,
+    longitude: document.getElementById("longitude").value,
+    waterTemp: document.getElementById("waterTemp").value,
+    weather: document.getElementById("weather").value,
+    waterClarity: document.getElementById("waterClarity").value,
+    windDirection: document.getElementById("windDirection").value,
+    wind: document.getElementById("wind").value,
+    barometricTrend: document.getElementById("barometricTrend").value,
+    airTemp: document.getElementById("airTemp").value,
+    fishStage: document.getElementById("fishStage").value,
+    species: document.getElementById("species").value,
+    weight: document.getElementById("weight").value,
+    length: document.getElementById("length").value,
+    lake: document.getElementById("lake").value,
+    lure: document.getElementById("lure").value,
+    baitColor: document.getElementById("baitColor").value,
+    waterName: document.getElementById("waterName").value,
+    photo: photoData,
+    notes: document.getElementById("notes").value.trim()
+  };
 
     if (editing) catches[editIndex] = savedCatch;
     else catches.push(savedCatch);
@@ -312,6 +328,7 @@ function showCatches() {
           : catches.map((fish, index) => `
             <div class="catch-card">
               <h3>${escapeHtml(fish.species || "Bass")}</h3>
+              ${fish.photo ? '<img src="' + fish.photo + '" alt="Catch photo" class="catch-photo">' : ''}
               <p><strong>Date:</strong> ${escapeHtml(fish.catchDate || "Not entered")}</p>
               <p><strong>Time:</strong> ${escapeHtml(fish.catchTime || "Not entered")}</p>
               <p><strong>Latitude:</strong> ${escapeHtml(fish.latitude || "Not entered")}</p>
