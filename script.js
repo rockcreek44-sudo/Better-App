@@ -323,108 +323,129 @@ function showCatchForm(editIndex = null) {
 
 function showCatches() {
   const catches = getCatches();
-  const filteredCatches = catches.filter(fish => {
-  const search = catchFilters.search;
 
-  return (
-    !search ||
-    JSON.stringify(fish).toLowerCase().includes(search)
-  );
-});
+  const filteredCatches = catches.filter(fish => {
+    const search = catchFilters.search;
+
+    return (
+      !search ||
+      JSON.stringify(fish).toLowerCase().includes(search)
+    );
+  });
 
   app.innerHTML = `
     ${header("MY TRIPS")}
     <section class="form-card">
       <h2>Saved Catches</h2>
+
       <input id="catchSearch" class="search-box" type="text" placeholder="Search catches...">
+
       ${
-        filteredCatches.length === 0S
+        filteredCatches.length === 0
           ? `<p>No catches logged yet.</p>`
-          :filteredCatches.map((fish, index) => `
-  <div class="catch-card">
-    <h3>${escapeHtml(fish.species || "Bass")}</h3>
+          : filteredCatches.map((fish, index) => `
+            <div class="catch-card">
 
-    ${fish.photo ? `
-      <img
-        src="${fish.photo}"
-        alt="Catch photo"
-        class="catch-photo photo-viewer"
-        data-photo="${fish.photo}"
-        style="width:100%;height:250px;object-fit:cover;display:block;cursor:pointer;"
-      >
-    ` : ""}
+              <h3>${escapeHtml(fish.species || "Bass")}</h3>
 
-    <div class="catch-section">
-      <h4>Trip</h4>
-      ${fish.catchDate ? `<p><strong>📅 Date:</strong> ${escapeHtml(fish.catchDate)}</p>` : ""}
-      ${fish.catchTime ? `<p><strong>🕒 Time:</strong> ${escapeHtml(fish.catchTime)}</p>` : ""}
-    </div>
+              ${
+                fish.photo
+                  ? `
+                    <img
+                      src="${fish.photo}"
+                      alt="Catch photo"
+                      class="catch-photo photo-viewer"
+                      data-photo="${fish.photo}"
+                      style="width:100%;height:250px;object-fit:cover;display:block;cursor:pointer;"
+                    >
+                  `
+                  : ""
+              }
 
-    <div class="catch-section">
-      <h4>Location</h4>
-      ${fish.waterName ? `<p><strong>🌊 Water Name:</strong> ${escapeHtml(fish.waterName)}</p>` : ""}
-      ${fish.lake ? `<p><strong>🏞️ Water Type:</strong> ${escapeHtml(fish.lake)}</p>` : ""}
-      ${fish.latitude ? `<p><strong>📍 Latitude:</strong> ${escapeHtml(fish.latitude)}</p>` : ""}
-      ${fish.longitude ? `<p><strong>📍 Longitude:</strong> ${escapeHtml(fish.longitude)}</p>` : ""}
-    </div>
+              <div class="catch-section">
+                <h4>Trip</h4>
+                ${fish.catchDate ? `<p><strong>Date:</strong> ${escapeHtml(fish.catchDate)}</p>` : ""}
+                ${fish.catchTime ? `<p><strong>Time:</strong> ${escapeHtml(fish.catchTime)}</p>` : ""}
+              </div>
 
-    <div class="catch-section">
-      <h4>Catch</h4>
-      ${fish.weight ? `<p><strong>⚖️ Weight:</strong> ${escapeHtml(fish.weight)}</p>` : ""}
-      ${fish.length ? `<p><strong>📏 Length:</strong> ${escapeHtml(fish.length)}</p>` : ""}
-      ${fish.lure ? `<p><strong>🎣 Lure:</strong> ${escapeHtml(fish.lure)}</p>` : ""}
-      ${fish.baitColor ? `<p><strong>🎨 Bait Color:</strong> ${escapeHtml(fish.baitColor)}</p>` : ""}
-    </div>
+              <div class="catch-section">
+                <h4>Location</h4>
+                ${fish.waterName ? `<p><strong>Water Name:</strong> ${escapeHtml(fish.waterName)}</p>` : ""}
+                ${fish.lake ? `<p><strong>Water Type:</strong> ${escapeHtml(fish.lake)}</p>` : ""}
+                ${fish.latitude ? `<p><strong>Latitude:</strong> ${escapeHtml(fish.latitude)}</p>` : ""}
+                ${fish.longitude ? `<p><strong>Longitude:</strong> ${escapeHtml(fish.longitude)}</p>` : ""}
+              </div>
 
-    <div class="catch-section">
-      <h4>Conditions</h4>
-      ${fish.waterTemp ? `<p><strong>🌡️ Water Temp:</strong> ${escapeHtml(fish.waterTemp)}</p>` : ""}
-      ${fish.airTemp ? `<p><strong>🌡️ Air Temp:</strong> ${escapeHtml(fish.airTemp)}</p>` : ""}
-      ${fish.weather ? `<p><strong>🌤️ Weather:</strong> ${escapeHtml(fish.weather)}</p>` : ""}
-      ${fish.waterClarity ? `<p><strong>💧 Water Clarity:</strong> ${escapeHtml(fish.waterClarity)}</p>` : ""}
-      ${fish.wind || fish.windDirection ? `<p><strong>💨 Wind:</strong> ${escapeHtml(fish.wind || "")} ${escapeHtml(fish.windDirection || "")}</p>` : ""}
-      ${fish.barometricTrend ? `<p><strong>📈 Barometric Trend:</strong> ${escapeHtml(fish.barometricTrend)}</p>` : ""}
-      ${fish.fishStage ? `<p><strong>🐟 Fish Stage:</strong> ${escapeHtml(fish.fishStage)}</p>` : ""}
-    </div>
+              <div class="catch-section">
+                <h4>Catch</h4>
+                ${fish.weight ? `<p><strong>Weight:</strong> ${escapeHtml(fish.weight)}</p>` : ""}
+                ${fish.length ? `<p><strong>Length:</strong> ${escapeHtml(fish.length)}</p>` : ""}
+                ${fish.lure ? `<p><strong>Lure:</strong> ${escapeHtml(fish.lure)}</p>` : ""}
+                ${fish.baitColor ? `<p><strong>Bait Color:</strong> ${escapeHtml(fish.baitColor)}</p>` : ""}
+              </div>
 
-    ${fish.notes ? `
-      <div class="catch-section">
-        <h4>Notes</h4>
-        <p>${escapeHtml(fish.notes)}</p>
-      </div>
-    ` : ""}
+              <div class="catch-section">
+                <h4>Conditions</h4>
+                ${fish.weather ? `<p><strong>Weather:</strong> ${escapeHtml(fish.weather)}</p>` : ""}
+                ${fish.waterClarity ? `<p><strong>Water Clarity:</strong> ${escapeHtml(fish.waterClarity)}</p>` : ""}
+                ${fish.wind ? `<p><strong>Wind:</strong> ${escapeHtml(fish.wind)}</p>` : ""}
+                ${fish.fishStage ? `<p><strong>Fish Stage:</strong> ${escapeHtml(fish.fishStage)}</p>` : ""}
+              </div>
 
-    ${fish.photo ? `<div class="photo-hint">Tap photo to enlarge</div>` : ""}
+              ${
+                fish.notes
+                  ? `
+                  <div class="catch-section">
+                    <h4>Notes</h4>
+                    <p>${escapeHtml(fish.notes)}</p>
+                  </div>
+                  `
+                  : ""
+              }
 
-    <button class="card back-button editBtn" data-index="${index}" type="button">Edit</button>
-    <button class="card back-button mapBtn" data-lat="${fish.latitude}" data-lon="${fish.longitude}" type="button">Map</button>
-    <button class="card back-button deleteBtn" data-index="${index}" type="button">Delete</button>
-  </div>
-`).join("")}
-  
+              <button class="card back-button editBtn" data-index="${index}" type="button">Edit</button>
+              <button class="card back-button mapBtn" data-lat="${fish.latitude}" data-lon="${fish.longitude}" type="button">Map</button>
+              <button class="card back-button deleteBtn" data-index="${index}" type="button">Delete</button>
 
-
+            </div>
+          `).join("")
+      }
 
       <button class="card primary back-button" id="addCatch" type="button">Log Another Catch</button>
       <button class="card back-button" id="backHome" type="button">Back Home</button>
+
     </section>
   `;
 
   document.getElementById("addCatch").onclick = () => showCatchForm();
   document.getElementById("backHome").onclick = showHome;
+
   const searchBox = document.getElementById("catchSearch");
 
-if (searchBox) {
-  searchBox.value = catchFilters.search;
+  if (searchBox) {
+    searchBox.value = catchFilters.search;
 
-  searchBox.oninput = () => {
-    catchFilters.search = searchBox.value.toLowerCase();
-    showCatches();
-  };
-}
+    searchBox.oninput = () => {
+      catchFilters.search = searchBox.value.toLowerCase();
+      showCatches();
+    };
+  }
 
   document.querySelectorAll(".editBtn").forEach(button => {
     button.onclick = () => showCatchForm(Number(button.dataset.index));
+  });
+
+  document.querySelectorAll(".mapBtn").forEach(button => {
+    button.onclick = () => {
+      const lat = button.dataset.lat;
+      const lon = button.dataset.lon;
+
+      if (lat && lon) {
+        window.open(`https://www.google.com/maps?q=${lat},${lon}`, "_blank");
+      }
+    };
+  });
+}
   });
 document.querySelectorAll(".mapBtn").forEach(button => {
   button.onclick = () => {
