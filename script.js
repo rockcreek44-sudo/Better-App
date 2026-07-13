@@ -2,6 +2,12 @@ const app = document.getElementById("app");
 let currentLatitude = "";
 let currentLongitude = "";
 let currentLocationName = "";
+let catchFilters = {
+  search: "",
+  species: "",
+  waterType: "",
+  lure: ""
+};
 function refreshGPS() {
   if (!navigator.geolocation) return;
 
@@ -317,6 +323,14 @@ function showCatchForm(editIndex = null) {
 
 function showCatches() {
   const catches = getCatches();
+  const filteredCatches = catches.filter(fish => {
+  const search = catchFilters.search;
+
+  return (
+    !search ||
+    JSON.stringify(fish).toLowerCase().includes(search)
+  );
+});
 
   app.innerHTML = `
     ${header("MY TRIPS")}
@@ -324,9 +338,9 @@ function showCatches() {
       <h2>Saved Catches</h2>
       <input id="catchSearch" class="search-box" type="text" placeholder="Search catches...">
       ${
-        catches.length === 0
+        filteredCatches.length === 0S
           ? `<p>No catches logged yet.</p>`
-          : catches.map((fish, index) => `
+          :filteredCatches.map((fish, index) => `
   <div class="catch-card">
     <h3>${escapeHtml(fish.species || "Bass")}</h3>
 
@@ -401,14 +415,11 @@ function showCatches() {
   const searchBox = document.getElementById("catchSearch");
 
 if (searchBox) {
-  searchBox.oninput = () => {
-    const term = searchBox.value.toLowerCase();
+  searchBox.value = catchFilters.search;
 
-    document.querySelectorAll(".catch-card").forEach(card => {
-      card.style.display = card.innerText.toLowerCase().includes(term)
-        ? ""
-        : "none";
-    });
+  searchBox.oninput = () => {
+    catchFilters.search = searchBox.value.toLowerCase();
+    showCatches();
   };
 }
 
