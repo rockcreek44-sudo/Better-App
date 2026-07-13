@@ -322,6 +322,7 @@ function showCatches() {
     ${header("MY TRIPS")}
     <section class="form-card">
       <h2>Saved Catches</h2>
+      <input id="catchSearch" class="search-box" type="text" placeholder="Search catches...">
       ${
         catches.length === 0
           ? `<p>No catches logged yet.</p>`
@@ -397,6 +398,19 @@ function showCatches() {
 
   document.getElementById("addCatch").onclick = () => showCatchForm();
   document.getElementById("backHome").onclick = showHome;
+  const searchBox = document.getElementById("catchSearch");
+
+if (searchBox) {
+  searchBox.oninput = () => {
+    const term = searchBox.value.toLowerCase();
+
+    document.querySelectorAll(".catch-card").forEach(card => {
+      card.style.display = card.innerText.toLowerCase().includes(term)
+        ? ""
+        : "none";
+    });
+  };
+}
 
   document.querySelectorAll(".editBtn").forEach(button => {
     button.onclick = () => showCatchForm(Number(button.dataset.index));
