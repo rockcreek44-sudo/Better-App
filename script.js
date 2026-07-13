@@ -318,32 +318,26 @@ function showCatchForm(editIndex = null) {
     showCatches();
   });
 
-  document.getElementById("backHome").onclick = showHome;
-}
-
-function showCatches() {
+ function showCatches() {
   const catches = getCatches();
-
-  const filteredCatches = catches.filter(fish => {
-    const search = catchFilters.search;
-
-    return (
-      !search ||
-      JSON.stringify(fish).toLowerCase().includes(search)
-    );
-  });
 
   app.innerHTML = `
     ${header("MY TRIPS")}
+
     <section class="form-card">
       <h2>Saved Catches</h2>
 
-      <input id="catchSearch" class="search-box" type="text" placeholder="Search catches...">
+      <input 
+        id="catchSearch" 
+        class="search-box" 
+        type="text" 
+        placeholder="Search catches..."
+      >
 
       ${
-        filteredCatches.length === 0
+        catches.length === 0
           ? `<p>No catches logged yet.</p>`
-          : filteredCatches.map((fish, index) => `
+          : catches.map((fish, index) => `
             <div class="catch-card">
 
               <h3>${escapeHtml(fish.species || "Bass")}</h3>
@@ -351,57 +345,34 @@ function showCatches() {
               ${
                 fish.photo
                   ? `
-                    <img
-                      src="${fish.photo}"
-                      alt="Catch photo"
-                      class="catch-photo photo-viewer"
-                      data-photo="${fish.photo}"
-                      style="width:100%;height:250px;object-fit:cover;display:block;cursor:pointer;"
-                    >
+                  <img
+                    src="${fish.photo}"
+                    alt="Catch photo"
+                    class="catch-photo photo-viewer"
+                    data-photo="${fish.photo}"
+                  >
                   `
                   : ""
               }
 
               <div class="catch-section">
                 <h4>Trip</h4>
-                ${fish.catchDate ? `<p><strong>Date:</strong> ${escapeHtml(fish.catchDate)}</p>` : ""}
-                ${fish.catchTime ? `<p><strong>Time:</strong> ${escapeHtml(fish.catchTime)}</p>` : ""}
+                <p><strong>Date:</strong> ${escapeHtml(fish.catchDate)}</p>
+                <p><strong>Time:</strong> ${escapeHtml(fish.catchTime)}</p>
               </div>
 
               <div class="catch-section">
                 <h4>Location</h4>
-                ${fish.waterName ? `<p><strong>Water Name:</strong> ${escapeHtml(fish.waterName)}</p>` : ""}
-                ${fish.lake ? `<p><strong>Water Type:</strong> ${escapeHtml(fish.lake)}</p>` : ""}
-                ${fish.latitude ? `<p><strong>Latitude:</strong> ${escapeHtml(fish.latitude)}</p>` : ""}
-                ${fish.longitude ? `<p><strong>Longitude:</strong> ${escapeHtml(fish.longitude)}</p>` : ""}
+                <p><strong>Water Type:</strong> ${escapeHtml(fish.lake)}</p>
+                <p><strong>Latitude:</strong> ${escapeHtml(fish.latitude)}</p>
+                <p><strong>Longitude:</strong> ${escapeHtml(fish.longitude)}</p>
               </div>
 
               <div class="catch-section">
                 <h4>Catch</h4>
-                ${fish.weight ? `<p><strong>Weight:</strong> ${escapeHtml(fish.weight)}</p>` : ""}
-                ${fish.length ? `<p><strong>Length:</strong> ${escapeHtml(fish.length)}</p>` : ""}
-                ${fish.lure ? `<p><strong>Lure:</strong> ${escapeHtml(fish.lure)}</p>` : ""}
-                ${fish.baitColor ? `<p><strong>Bait Color:</strong> ${escapeHtml(fish.baitColor)}</p>` : ""}
+                <p><strong>Weight:</strong> ${escapeHtml(fish.weight)}</p>
+                <p><strong>Length:</strong> ${escapeHtml(fish.length)}</p>
               </div>
-
-              <div class="catch-section">
-                <h4>Conditions</h4>
-                ${fish.weather ? `<p><strong>Weather:</strong> ${escapeHtml(fish.weather)}</p>` : ""}
-                ${fish.waterClarity ? `<p><strong>Water Clarity:</strong> ${escapeHtml(fish.waterClarity)}</p>` : ""}
-                ${fish.wind ? `<p><strong>Wind:</strong> ${escapeHtml(fish.wind)}</p>` : ""}
-                ${fish.fishStage ? `<p><strong>Fish Stage:</strong> ${escapeHtml(fish.fishStage)}</p>` : ""}
-              </div>
-
-              ${
-                fish.notes
-                  ? `
-                  <div class="catch-section">
-                    <h4>Notes</h4>
-                    <p>${escapeHtml(fish.notes)}</p>
-                  </div>
-                  `
-                  : ""
-              }
 
               <button class="card back-button editBtn" data-index="${index}" type="button">Edit</button>
               <button class="card back-button mapBtn" data-lat="${fish.latitude}" data-lon="${fish.longitude}" type="button">Map</button>
@@ -420,19 +391,17 @@ function showCatches() {
   document.getElementById("addCatch").onclick = () => showCatchForm();
   document.getElementById("backHome").onclick = showHome;
 
-  const searchBox = document.getElementById("catchSearch");
-
-  if (searchBox) {
-    searchBox.value = catchFilters.search;
-
-    searchBox.oninput = () => {
-      catchFilters.search = searchBox.value.toLowerCase();
-      showCatches();
-    };
-  }
-
   document.querySelectorAll(".editBtn").forEach(button => {
     button.onclick = () => showCatchForm(Number(button.dataset.index));
+  });
+
+  document.querySelectorAll(".deleteBtn").forEach(button => {
+    button.onclick = () => {
+      const updated = getCatches();
+      updated.splice(Number(button.dataset.index), 1);
+      saveCatches(updated);
+      showCatches();
+    };
   });
 
   document.querySelectorAll(".mapBtn").forEach(button => {
@@ -443,59 +412,6 @@ function showCatches() {
       if (lat && lon) {
         window.open(`https://www.google.com/maps?q=${lat},${lon}`, "_blank");
       }
-    };
-  });
-}
-  });
-document.querySelectorAll(".mapBtn").forEach(button => {
-  button.onclick = () => {
-    const lat = button.dataset.lat;
-    const lon = button.dataset.lon;
-    if (lat && lon) {
-      window.open(`https://www.google.com/maps?q=${lat},${lon}`, "_blank");
-    }
-  };
-});
-
-document.querySelectorAll(".photo-viewer").forEach(photo => {
-  photo.onclick = () => {
-    const src = photo.dataset.photo;
-    if (!src) return;
-
-    const overlay = document.createElement("div");
-    overlay.style.position = "fixed";
-    overlay.style.top = "0";
-    overlay.style.left = "0";
-    overlay.style.width = "100vw";
-    overlay.style.height = "100vh";
-    overlay.style.background = "rgba(0,0,0,0.9)";
-    overlay.style.display = "flex";
-    overlay.style.alignItems = "center";
-    overlay.style.justifyContent = "center";
-    overlay.style.zIndex = "9999";
-
-    const img = document.createElement("img");
-    img.src = src;
-    img.style.maxWidth = "95%";
-    img.style.maxHeight = "95%";
-    img.style.objectFit = "contain";
-
-    overlay.appendChild(img);
-    overlay.onclick = () => {
-  document.body.style.overflow = "";
-  overlay.remove();
-};
-
-    document.body.style.overflow = "hidden";
-    document.body.appendChild(overlay);
-  };
-});
-  document.querySelectorAll(".deleteBtn").forEach(button => {
-    button.onclick = () => {
-      const updated = getCatches();
-      updated.splice(Number(button.dataset.index), 1);
-      saveCatches(updated);
-      showCatches();
     };
   });
 }
