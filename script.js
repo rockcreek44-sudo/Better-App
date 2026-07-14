@@ -119,7 +119,7 @@ function showHome() {
   document.getElementById("myTrips").onclick = showCatches;
   document.getElementById("stats").onclick = showStats;
   document.getElementById("settings").onclick = showSettings;
-}
+
 function refreshGPS() {
   if (!navigator.geolocation) return;
 
