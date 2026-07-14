@@ -283,6 +283,14 @@ ${optionList(BAIT_COLORS, oldCatch.baitColor || "", "Select Bait Color")}
       lure: document.getElementById("lure").value,
       weather: document.getElementById("weather").value,
       notes: document.getElementById("notes").value
+      waterTemp: document.getElementById("waterTemp").value,
+waterClarity: document.getElementById("waterClarity").value,
+windDirection: document.getElementById("windDirection").value,
+wind: document.getElementById("wind").value,
+barometricTrend: document.getElementById("barometricTrend").value,
+airTemp: document.getElementById("airTemp").value,
+fishStage: document.getElementById("fishStage").value,
+baitColor: document.getElementById("baitColor").value,
     };
 
 
@@ -322,6 +330,13 @@ function showCatches() {
             <p><strong>Lure:</strong> ${fish.lure || ""}</p>
             <p><strong>Weight:</strong> ${fish.weight || ""}</p>
             <p><strong>Length:</strong> ${fish.length || ""}</p>
+            <p><strong>Water Temp:</strong> ${fish.waterTemp || ""}</p>
+<p><strong>Water Clarity:</strong> ${fish.waterClarity || ""}</p>
+<p><strong>Wind:</strong> ${fish.wind || ""} ${fish.windDirection || ""}</p>
+<p><strong>Barometric:</strong> ${fish.barometricTrend || ""}</p>
+<p><strong>Air Temp:</strong> ${fish.airTemp || ""}</p>
+<p><strong>Fish Stage:</strong> ${fish.fishStage || ""}</p>
+<p><strong>Bait Color:</strong> ${fish.baitColor || ""}</p>
 
             <button class="card back-button editBtn"
             data-index="${index}">
