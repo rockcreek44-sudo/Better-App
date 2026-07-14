@@ -214,6 +214,41 @@ function showCatchForm(editIndex = null) {
           ${optionList(WEATHER, oldCatch.weather || "", "Select Weather")}
         </select>
 
+        <label>Water Temp</label>
+<input id="waterTemp" type="number" value="${oldCatch.waterTemp || ""}">
+
+<label>Water Clarity</label>
+<select id="waterClarity">
+${optionList(WATER_CLARITY, oldCatch.waterClarity || "", "Select Water Clarity")}
+</select>
+
+<label>Wind Direction</label>
+<select id="windDirection">
+${optionList(WIND_DIRECTION, oldCatch.windDirection || "", "Select Wind Direction")}
+</select>
+
+<label>Wind</label>
+<select id="wind">
+${optionList(WIND, oldCatch.wind || "", "Select Wind")}
+</select>
+
+<label>Barometric Trend</label>
+<select id="barometricTrend">
+${optionList(BAROMETRIC, oldCatch.barometricTrend || "", "Select Barometric Trend")}
+</select>
+
+<label>Air Temp</label>
+<input id="airTemp" type="number" value="${oldCatch.airTemp || ""}">
+
+<label>Fish Stage</label>
+<select id="fishStage">
+${optionList(FISH_STAGE, oldCatch.fishStage || "", "Select Fish Stage")}
+</select>
+
+<label>Bait Color</label>
+<select id="baitColor">
+${optionList(BAIT_COLORS, oldCatch.baitColor || "", "Select Bait Color")}
+</select>
         <label>Notes</label>
         <textarea id="notes">${oldCatch.notes || ""}</textarea>
 
